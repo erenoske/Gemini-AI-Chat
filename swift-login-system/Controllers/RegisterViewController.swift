@@ -42,6 +42,10 @@ class RegisterViewController: UIViewController {
         self.setupUI()
         self.applyConstraints()
         
+        self.usernameField.delegate = self
+        self.emailField.delegate = self
+        self.passwordField.delegate = self
+        
         self.termsTextView.delegate = self
         
         self.signUpButton.addTarget(self, action: #selector(didTabSignUp), for: .touchUpInside)
@@ -222,5 +226,19 @@ extension RegisterViewController: UITextViewDelegate {
         textView.delegate = nil
         textView.selectedTextRange = nil
         textView.delegate = self
+    }
+}
+
+extension RegisterViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == usernameField {
+            emailField.becomeFirstResponder()
+        } else if textField == emailField {
+            passwordField.becomeFirstResponder()
+        } else {
+            didTabSignUp()
+        }
+        
+        return true
     }
 }

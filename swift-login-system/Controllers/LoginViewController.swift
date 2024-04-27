@@ -20,6 +20,9 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
+        
+        self.emailField.delegate = self
+        self.passwordField.delegate = self
 
         self.setupUI()
         self.applyConstraints()
@@ -35,7 +38,7 @@ class LoginViewController: UIViewController {
             password: self.passwordField.text ?? ""
         )
         
-        // Username check
+        // Email check
         if !Validator.isValidEmail(for: loginRequest.email) {
             AlertManager.showInvalidEmailAlert(on: self)
             return
@@ -156,5 +159,17 @@ class LoginViewController: UIViewController {
         NSLayoutConstraint.activate(signInButtonConstraints)
         NSLayoutConstraint.activate(newUserButtonConstraints)
         NSLayoutConstraint.activate(forgotPasswordButtonConstraints)
+    }
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == emailField {
+            passwordField.becomeFirstResponder()
+        } else {
+            didTabSignIn()
+        }
+        
+        return true
     }
 }

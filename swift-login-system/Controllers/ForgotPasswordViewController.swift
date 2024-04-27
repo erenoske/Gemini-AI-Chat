@@ -50,14 +50,14 @@ class ForgotPasswordViewController: UIViewController {
             emailField.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 11),
             emailField.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
             emailField.heightAnchor.constraint(equalToConstant: 40),
-            emailField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85)
+            emailField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
         ]
         
         let resetPasswordButtonConstraints = [
             resetPasswordButton.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 22),
             resetPasswordButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
             resetPasswordButton.heightAnchor.constraint(equalToConstant: 40),
-            resetPasswordButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85)
+            resetPasswordButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
         ]
         
         NSLayoutConstraint.activate(headerViewConstraints)
@@ -66,6 +66,22 @@ class ForgotPasswordViewController: UIViewController {
     }
     
     @objc private func didTabForgetPassword() {
-        guard let email = self.emailField.text, !email.isEmpty else { return }
+        let email = self.emailField.text ?? ""
+        
+        if !Validator.isValidEmail(for: email) {
+            AlertManager.showInvalidEmailAlert(on: self)
+            return
+        }
+        
+        AuthService.shared.forgotPassword(with: email) { [weak self] error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                AlertManager.showErrorSendingPasswordReset(on: self, with: error)
+                return
+            }
+            
+            AlertManager.showPasswordResetSend(on: self)
+        }
     }
 }

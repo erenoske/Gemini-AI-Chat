@@ -14,7 +14,6 @@ class HomeViewController: UIViewController {
         label.textColor = .label
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 24, weight: .semibold)
-        label.text = "loading..."
         label.numberOfLines = 2
         return label
     }()
@@ -24,6 +23,20 @@ class HomeViewController: UIViewController {
 
         self.setupUI()
         self.applyConstraints()
+        
+        AuthService.shared.fetchUser { [weak self] user, error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                AlertManager.showFetchingUserError(on: self, with: error)
+                return
+            }
+            
+            if let user = user {
+                self.label.text = "\(user.username)\n\(user.email)"
+            }
+        }
+        
     }
     
     private func setupUI() {
