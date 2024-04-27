@@ -37,6 +37,7 @@ class RegisterViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hideKeyboardWhenTappedAround()
 
         self.setupUI()
         self.applyConstraints()
@@ -48,12 +49,59 @@ class RegisterViewController: UIViewController {
     }
     
     @objc private func didTabSignUp() {
-        print("DEBUG PRINT:", "didTapSignUp")
         
-        let webViewer = WebViewController(with: "https://www.memeatlas.com/images/pepes/pepe-fancy-smoking-cigar-served-by-seething-wojak.jpg")
+        let registerUserRequest = RegisterUserRequest(
+            username: self.usernameField.text ?? "",
+            email: self.emailField.text ?? "",
+            password: self.passwordField.text ?? ""
+        )
         
-        let nav = UINavigationController(rootViewController: webViewer)
-        self.present(nav, animated: true, completion: nil)
+        // Username check
+        if !Validator.isValidUsername(for: registerUserRequest.username) {
+            AlertManager.showInvalidUsernameAlert(on: self)
+            return
+        }
+        
+        // Email check
+        if !Validator.isValidEmail(for: registerUserRequest.email) {
+            AlertManager.showInvalidEmailAlert(on: self)
+            return
+        }
+        
+        // Password check
+        if !Validator.isPasswordValid(for: registerUserRequest.password) {
+            AlertManager.showInvalidPasswordAlert(on: self)
+            return
+        }
+        
+        let overlayView = UIView(frame: self.view.bounds)
+        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        self.view.addSubview(overlayView)
+        
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.startAnimating()
+        overlayView.addSubview(activityIndicator)
+        activityIndicator.center = overlayView.center
+        
+        AuthService.shared.registerUser(with: registerUserRequest) { [weak self] wasRegistered, error in
+            
+            overlayView.removeFromSuperview()
+            
+            guard let self = self else { return }
+            
+            if let error = error {
+                AlertManager.showRegistrationErrorAlert(on: self, with: error)
+                return
+            }
+            
+            if wasRegistered {
+                if let sceneDelegate = self.view.window?.windowScene?.delegate as? SceneDelegate {
+                    sceneDelegate.checkAuthentication()
+                }
+            } else {
+                AlertManager.showRegistrationErrorAlert(on: self)
+            }
+        }
     }
     
     @objc private func didTabSignIn() {
@@ -99,14 +147,14 @@ class RegisterViewController: UIViewController {
             usernameField.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 5),
             usernameField.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
             usernameField.heightAnchor.constraint(equalToConstant: 40),
-            usernameField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85)
+            usernameField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
         ]
         
         let emailFieldConstraints = [
             emailField.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 22),
             emailField.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
             emailField.heightAnchor.constraint(equalToConstant: 40),
-            emailField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85)
+            emailField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
         ]
 
         
@@ -114,27 +162,27 @@ class RegisterViewController: UIViewController {
             passwordField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 22),
             passwordField.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
             passwordField.heightAnchor.constraint(equalToConstant: 40),
-            passwordField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85)
+            passwordField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
         ]
         
         let signUpButtonConstraints = [
             signUpButton.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 22),
             signUpButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
             signUpButton.heightAnchor.constraint(equalToConstant: 40),
-            signUpButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85)
+            signUpButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
         ]
         
         let termsTextViewConstraints = [
             termsTextView.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 11),
             termsTextView.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            termsTextView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85)
+            termsTextView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
         ]
         
         let signInButtonConstraints = [
             signInButton.topAnchor.constraint(equalTo: termsTextView.bottomAnchor, constant: 22),
             signInButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
             signInButton.heightAnchor.constraint(equalToConstant: 40),
-            signInButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85)
+            signInButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
         ]
         
 

@@ -24,8 +24,6 @@ class HomeViewController: UIViewController {
 
         self.setupUI()
         self.applyConstraints()
-        
-        self.label.text = "Erenoske\neren@gmail.com"
     }
     
     private func setupUI() {
@@ -46,7 +44,18 @@ class HomeViewController: UIViewController {
     }
     
     @objc private func didTabLogout() {
-        
+        AuthService.shared.signOut { [weak self] error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                AlertManager.showLogoutError(on: self, with: error)
+            }
+            
+            if let sceneDelegate = self.view.window?.windowScene?.delegate as?
+                SceneDelegate {
+                sceneDelegate.checkAuthentication()
+            }
+        }
     }
 
 }

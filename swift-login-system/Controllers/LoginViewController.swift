@@ -10,7 +10,7 @@ import UIKit
 class LoginViewController: UIViewController {
     
     private let headerView = AuthHeaderView(title: "Sign In", subTitle: "Sign in to your account")
-    private let usernameField = CustomTextField(fieldType: .username)
+    private let emailField = CustomTextField(fieldType: .email)
     private let passwordField = CustomTextField(fieldType: .password)
     
     private let signInButton = CustomButton(title: "Sign In", hasBackground: true, fontSize: .big)
@@ -19,6 +19,7 @@ class LoginViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hideKeyboardWhenTappedAround()
 
         self.setupUI()
         self.applyConstraints()
@@ -29,11 +30,49 @@ class LoginViewController: UIViewController {
     }
     
     @objc private func didTabSignIn() {
-        let vc = HomeViewController()
-        let nav = UINavigationController(rootViewController: vc)
-        nav.modalPresentationStyle = .fullScreen
-        self.present(nav, animated: false, completion: nil)
+        let loginRequest = LoginUserRequest(
+            email: self.emailField.text ?? "",
+            password: self.passwordField.text ?? ""
+        )
+        
+        // Username check
+        if !Validator.isValidEmail(for: loginRequest.email) {
+            AlertManager.showInvalidEmailAlert(on: self)
+            return
+        }
+        
+        // Password check
+        if !Validator.isPasswordValid(for: loginRequest.password) {
+            AlertManager.showInvalidPasswordAlert(on: self)
+            return
+        }
+        
+        let overlayView = UIView(frame: self.view.bounds)
+        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        self.view.addSubview(overlayView)
+        
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.startAnimating()
+        overlayView.addSubview(activityIndicator)
+        activityIndicator.center = overlayView.center
+        
+        AuthService.shared.signIn(with: loginRequest) { [weak self] error in
+            overlayView.removeFromSuperview()
+            
+            guard let self = self else {return}
+            
+            if let error = error {
+                AlertManager.showSignInErrorAlert(on: self, with: error)
+                return
+            }
+            
+            if let sceneDelegate = self.view.window?.windowScene?.delegate as? SceneDelegate {
+                sceneDelegate.checkAuthentication()
+            }
+        }
     }
+
+
     
     @objc private func didTapNewUser() {
         let vc = RegisterViewController()
@@ -54,14 +93,14 @@ class LoginViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         view.addSubview(headerView)
-        view.addSubview(usernameField)
+        view.addSubview(emailField)
         view.addSubview(passwordField)
         view.addSubview(signInButton)
         view.addSubview(newUserButton)
         view.addSubview(forgotPasswordButton)
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
-        usernameField.translatesAutoresizingMaskIntoConstraints = false
+        emailField.translatesAutoresizingMaskIntoConstraints = false
         passwordField.translatesAutoresizingMaskIntoConstraints = false
         signInButton.translatesAutoresizingMaskIntoConstraints = false
         newUserButton.translatesAutoresizingMaskIntoConstraints = false
@@ -76,43 +115,43 @@ class LoginViewController: UIViewController {
             headerView.heightAnchor.constraint(equalToConstant: 200)
         ]
         
-        let usernameFieldConstraints = [
-            usernameField.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 5),
-            usernameField.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            usernameField.heightAnchor.constraint(equalToConstant: 40),
-            usernameField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85)
+        let emailFieldConstraints = [
+            emailField.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 5),
+            emailField.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
+            emailField.heightAnchor.constraint(equalToConstant: 40),
+            emailField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
         ]
         
         let passwordFieldConstraints = [
-            passwordField.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 22),
+            passwordField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 22),
             passwordField.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
             passwordField.heightAnchor.constraint(equalToConstant: 40),
-            passwordField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85)
+            passwordField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
         ]
         
         let signInButtonConstraints = [
             signInButton.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 22),
             signInButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
             signInButton.heightAnchor.constraint(equalToConstant: 40),
-            signInButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85)
+            signInButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
         ]
         
         let newUserButtonConstraints = [
             newUserButton.topAnchor.constraint(equalTo: signInButton.bottomAnchor),
             newUserButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
             newUserButton.heightAnchor.constraint(equalToConstant: 50),
-            newUserButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85)
+            newUserButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
         ]
         
         let forgotPasswordButtonConstraints = [
             forgotPasswordButton.topAnchor.constraint(equalTo: newUserButton.bottomAnchor),
             forgotPasswordButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
             forgotPasswordButton.heightAnchor.constraint(equalToConstant: 30),
-            forgotPasswordButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85)
+            forgotPasswordButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
         ]
         
         NSLayoutConstraint.activate(headerViewConstraints)
-        NSLayoutConstraint.activate(usernameFieldConstraints)
+        NSLayoutConstraint.activate(emailFieldConstraints)
         NSLayoutConstraint.activate(passwordFieldConstraints)
         NSLayoutConstraint.activate(signInButtonConstraints)
         NSLayoutConstraint.activate(newUserButtonConstraints)

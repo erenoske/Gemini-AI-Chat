@@ -59,7 +59,7 @@ extension AlertManager {
     }
     
     public static func showSignInErrorAlert(on vc: UIViewController, with error: Error) {
-        self.showBasicAlert(on: vc, with: "Unknown Registration Error", and: "\(error.localizedDescription)")
+        self.showBasicAlert(on: vc, with: "Unknown Sign In Error", and: "\(error.localizedDescription)")
     }
     
 }
@@ -77,7 +77,7 @@ extension AlertManager {
 extension AlertManager {
     
     public static func showPasswordResetSend(on vc: UIViewController) {
-        self.showBasicAlert(on: vc, with: "Unkown Error Signing In", and: nil)
+        self.showBasicAlert(on: vc, with: "Unkown Error Password Reset", and: nil)
     }
     
     public static func showErrorSendingPasswordReset(on vc: UIViewController, with error: Error) {
