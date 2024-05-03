@@ -33,6 +33,8 @@ class LoginViewController: UIViewController {
     }
     
     @objc private func didTabSignIn() {
+        view.endEditing(true)
+        
         let loginRequest = LoginUserRequest(
             email: self.emailField.text ?? "",
             password: self.passwordField.text ?? ""

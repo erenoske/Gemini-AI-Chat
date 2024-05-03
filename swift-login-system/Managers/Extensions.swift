@@ -32,7 +32,6 @@ extension UIViewController {
 
 extension UIViewController: UIGestureRecognizerDelegate {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        // Eğer dokunma bir düğmeden geldiyse dismissKeyboard fonksiyonunu çalıştırma
         if touch.view is UIButton {
             return false
         }

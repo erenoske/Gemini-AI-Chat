@@ -30,6 +30,7 @@
 		B0D1CBFA2BDD3F3B0022F143 /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1CBF92BDD3F3B0022F143 /* Validator.swift */; };
 		B0D1CBFC2BDD4CEC0022F143 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1CBFB2BDD4CEC0022F143 /* Extensions.swift */; };
 		B0D1CBFE2BDD972E0022F143 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1CBFD2BDD972E0022F143 /* User.swift */; };
+		B0D1CC002BE569160022F143 /* EmailLinkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1CBFF2BE569160022F143 /* EmailLinkRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,7 @@
 		B0D1CBF92BDD3F3B0022F143 /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		B0D1CBFB2BDD4CEC0022F143 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		B0D1CBFD2BDD972E0022F143 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		B0D1CBFF2BE569160022F143 /* EmailLinkRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLinkRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +161,7 @@
 				B0D1CBF52BDC3FC30022F143 /* RegisterUserRequest.swift */,
 				B0D1CBF72BDC44030022F143 /* LoginUserRequest.swift */,
 				B0D1CBFD2BDD972E0022F143 /* User.swift */,
+				B0D1CBFF2BE569160022F143 /* EmailLinkRequest.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 				B0D1CBFE2BDD972E0022F143 /* User.swift in Sources */,
 				B0D1CBFC2BDD4CEC0022F143 /* Extensions.swift in Sources */,
 				B0D1CBFA2BDD3F3B0022F143 /* Validator.swift in Sources */,
+				B0D1CC002BE569160022F143 /* EmailLinkRequest.swift in Sources */,
 				B0D1CBBF2BDBCB1D0022F143 /* AppDelegate.swift in Sources */,
 				B0D1CBDC2BDBCC9F0022F143 /* RegisterViewController.swift in Sources */,
 				B0D1CBF62BDC3FC30022F143 /* RegisterUserRequest.swift in Sources */,

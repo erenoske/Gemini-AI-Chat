@@ -106,6 +106,8 @@ class RegisterViewController: UIViewController {
                 AlertManager.showRegistrationErrorAlert(on: self)
             }
         }
+        
+        
     }
     
     @objc private func didTabSignIn() {

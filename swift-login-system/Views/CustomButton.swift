@@ -18,7 +18,7 @@ class CustomButton: UIButton {
     init(title: String, hasBackground: Bool = false, fontSize: FontSize) {
         super.init(frame: .zero)
         self.setTitle(title, for: .normal)
-        self.layer.cornerRadius = 12
+        self.layer.cornerRadius = 5
         self.layer.masksToBounds = true
         
         self.backgroundColor = hasBackground ? .systemBlue : .clear

@@ -15,10 +15,32 @@ class AuthService {
     
     private init() {}
     
+    public func sendSignInLink(with userRequest: EmailLinkRequest, completion: @escaping (Bool, Error?) -> Void) {
+        let email = userRequest.email
+        
+        let actionCodeSettings = ActionCodeSettings()
+        actionCodeSettings.handleCodeInApp = true
+        actionCodeSettings.url = URL(string: "TODO")
+        
+        
+        
+        Auth.auth().sendSignInLink(toEmail: email, actionCodeSettings: actionCodeSettings) { error in
+            if let error = error {
+                completion(false, error)
+                return
+            }
+            
+            UserDefaults.standard.set(email, forKey: "userEmail")
+            
+            completion(true, nil)
+        }
+    }
+    
     public func registerUser(with userRequest: RegisterUserRequest, completion: @escaping (Bool, Error?) -> Void) {
         let username = userRequest.username
         let email = userRequest.email
         let password = userRequest.password
+    
         
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             if let error = error {
