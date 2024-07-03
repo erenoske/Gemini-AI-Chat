@@ -22,12 +22,17 @@ class CustomTextField: UITextField {
         self.authFieldType = fieldType
         super.init(frame: .zero)
         
-        self.backgroundColor = .secondarySystemBackground
+        self.backgroundColor = .systemBackground
         self.layer.cornerRadius = 5
         
         self.returnKeyType = .done
         self.autocorrectionType = .no
         self.autocapitalizationType = .none
+        
+        self.layer.borderColor = UIColor.secondaryLabel.cgColor
+        self.layer.borderWidth = 1
+        self.layer.cornerRadius = 20
+        self.layer.masksToBounds = true
         
         self.leftViewMode = .always
         self.rightViewMode = .always
@@ -48,13 +53,11 @@ class CustomTextField: UITextField {
             // "Eye" button
             eyeButton.setImage(UIImage(systemName: "eye.circle"), for: .normal)
             eyeButton.setImage(UIImage(systemName: "eye.slash.circle"), for: .selected)
-            eyeButton.tintColor = .systemBlue
+            eyeButton.tintColor = .label
             eyeButton.translatesAutoresizingMaskIntoConstraints = false
             eyeButton.addTarget(self, action: #selector(togglePasswordVisibility), for: .touchUpInside)
             let eyeView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: self.frame.size.height))
-            
-
-            
+    
             eyeView.addSubview(eyeButton)
             self.rightView = eyeView
             

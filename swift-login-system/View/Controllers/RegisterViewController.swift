@@ -34,6 +34,18 @@ class RegisterViewController: UIViewController {
         tv.isScrollEnabled = false
         return tv
     }()
+    
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    private let contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -123,13 +135,16 @@ class RegisterViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .systemBackground
         
-        view.addSubview(headerView)
-        view.addSubview(usernameField)
-        view.addSubview(emailField)
-        view.addSubview(passwordField)
-        view.addSubview(signUpButton)
-        view.addSubview(termsTextView)
-        view.addSubview(signInButton)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
+        contentView.addSubview(headerView)
+        contentView.addSubview(usernameField)
+        contentView.addSubview(emailField)
+        contentView.addSubview(passwordField)
+        contentView.addSubview(signUpButton)
+        contentView.addSubview(termsTextView)
+        contentView.addSubview(signInButton)
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
         usernameField.translatesAutoresizingMaskIntoConstraints = false
@@ -142,54 +157,76 @@ class RegisterViewController: UIViewController {
     }
     
     private func applyConstraints() {
+        
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
+        
         let headerViewConstraints = [
-            headerView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 200)
-        ]
-        
-        let usernameFieldConstraints = [
-            usernameField.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 5),
-            usernameField.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            usernameField.heightAnchor.constraint(equalToConstant: 40),
-            usernameField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
-        ]
-        
-        let emailFieldConstraints = [
-            emailField.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 22),
-            emailField.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            emailField.heightAnchor.constraint(equalToConstant: 40),
-            emailField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
-        ]
+              headerView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
+              headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+              headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+              headerView.heightAnchor.constraint(equalToConstant: 200)
+          ]
+          
+          let usernameFieldConstraints = [
+              usernameField.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 5),
+              usernameField.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+              usernameField.heightAnchor.constraint(equalToConstant: 40),
+              usernameField.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+              usernameField.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10)
+          ]
+          
+          let emailFieldConstraints = [
+              emailField.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 22),
+              emailField.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+              emailField.heightAnchor.constraint(equalToConstant: 40),
+              emailField.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+              emailField.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10)
+          ]
 
-        
-        let passwordFieldConstraints = [
-            passwordField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 22),
-            passwordField.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            passwordField.heightAnchor.constraint(equalToConstant: 40),
-            passwordField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
-        ]
-        
-        let signUpButtonConstraints = [
-            signUpButton.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 22),
-            signUpButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            signUpButton.heightAnchor.constraint(equalToConstant: 40),
-            signUpButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
-        ]
-        
-        let termsTextViewConstraints = [
-            termsTextView.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 11),
-            termsTextView.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            termsTextView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
-        ]
-        
-        let signInButtonConstraints = [
-            signInButton.topAnchor.constraint(equalTo: termsTextView.bottomAnchor, constant: 22),
-            signInButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            signInButton.heightAnchor.constraint(equalToConstant: 40),
-            signInButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.95)
-        ]
+          
+          let passwordFieldConstraints = [
+              passwordField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 22),
+              passwordField.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+              passwordField.heightAnchor.constraint(equalToConstant: 40),
+              passwordField.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+              passwordField.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10)
+          ]
+          
+          let signUpButtonConstraints = [
+              signUpButton.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 22),
+              signUpButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+              signUpButton.heightAnchor.constraint(equalToConstant: 40),
+              signUpButton.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+              signUpButton.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10)
+          ]
+          
+          let termsTextViewConstraints = [
+              termsTextView.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 11),
+              termsTextView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+              termsTextView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+              termsTextView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10)
+          ]
+          
+          let signInButtonConstraints = [
+              signInButton.topAnchor.constraint(equalTo: termsTextView.bottomAnchor, constant: 22),
+              signInButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+              signInButton.heightAnchor.constraint(equalToConstant: 40),
+              signInButton.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+              signInButton.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+              signInButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
+          ]
+          
         
 
         

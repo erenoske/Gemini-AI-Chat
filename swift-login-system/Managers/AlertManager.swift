@@ -98,3 +98,11 @@ extension AlertManager {
     }
     
 }
+
+// MARK: - Chat Errors
+
+extension AlertManager {
+    public static func showPhotoError(on vc: UIViewController) {
+        self.showBasicAlert(on: vc, with: "Error", and: "Please enter a prompt before selecting image.")
+    }
+}

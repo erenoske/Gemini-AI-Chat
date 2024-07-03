@@ -29,24 +29,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if Auth.auth().currentUser == nil {
             self.goToController(with: LoginViewController())
         } else {
-            self.goToController(with: HomeViewController())
+            self.goToController(with: HomeViewController(viewModel: ChatViewModel()))
         }
     }
     
     private func goToController(with viewController: UIViewController) {
-        DispatchQueue.main.async { [weak self] in
-            UIView.animate(withDuration: 0.25) {
-                self?.window?.layer.opacity = 0
-            } completion: { [weak self] _ in
+   
                 let nav = UINavigationController(rootViewController: viewController)
-                self?.window?.rootViewController = nav
+                self.window?.rootViewController = nav
                 
-                UIView.animate(withDuration: 0.25) { [weak self] in
-                    self?.window?.layer.opacity = 1
-                }
-            }
-
-        }
     }
 
 }

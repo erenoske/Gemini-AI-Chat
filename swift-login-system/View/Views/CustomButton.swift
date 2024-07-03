@@ -21,10 +21,17 @@ class CustomButton: UIButton {
         self.layer.cornerRadius = 5
         self.layer.masksToBounds = true
         
-        self.backgroundColor = hasBackground ? .systemBlue : .clear
+        self.backgroundColor = hasBackground ? .systemBackground : .clear
         
-        let titleColor: UIColor = hasBackground ? .white : .systemBlue
+        let titleColor: UIColor = .label
         self.setTitleColor(titleColor, for: .normal)
+        
+        if hasBackground {
+            self.layer.borderColor = UIColor.secondaryLabel.cgColor
+            self.layer.borderWidth = 1
+            self.layer.cornerRadius = 20
+            self.layer.masksToBounds = true
+        }
         
         switch fontSize {
         case .big:
