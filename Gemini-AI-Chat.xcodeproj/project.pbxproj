@@ -146,7 +146,7 @@
 		B0D1CBB22BDBCB1D0022F143 = {
 			isa = PBXGroup;
 			children = (
-				B0D1CBBD2BDBCB1D0022F143 /* swift-login-system */,
+				B0D1CBBD2BDBCB1D0022F143 /* Gemini-AI-Chat */,
 				B0D1CBBC2BDBCB1D0022F143 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -159,7 +159,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B0D1CBBD2BDBCB1D0022F143 /* swift-login-system */ = {
+		B0D1CBBD2BDBCB1D0022F143 /* Gemini-AI-Chat */ = {
 			isa = PBXGroup;
 			children = (
 				B02732C92C35C7480053C7BC /* View */,
@@ -169,7 +169,7 @@
 				B0D1CBD32BDBCBF10022F143 /* Delegate */,
 				B0D1CBD22BDBCBC40022F143 /* Files */,
 			);
-			path = "swift-login-system";
+			path = "Gemini-AI-Chat";
 			sourceTree = "<group>";
 		};
 		B0D1CBD22BDBCBC40022F143 /* Files */ = {
@@ -260,7 +260,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B0D1CBB62BDBCB1D0022F143 /* Build configuration list for PBXProject "swift-login-system" */;
+			buildConfigurationList = B0D1CBB62BDBCB1D0022F143 /* Build configuration list for PBXProject "Gemini-AI-Chat" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -472,7 +472,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B9ZPR786BL;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "swift-login-system/Info.plist";
+				INFOPLIST_FILE = "Gemini-AI-Chat/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
@@ -503,7 +503,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B9ZPR786BL;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "swift-login-system/Info.plist";
+				INFOPLIST_FILE = "Gemini-AI-Chat/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
@@ -528,7 +528,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B0D1CBB62BDBCB1D0022F143 /* Build configuration list for PBXProject "swift-login-system" */ = {
+		B0D1CBB62BDBCB1D0022F143 /* Build configuration list for PBXProject "Gemini-AI-Chat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B0D1CBCD2BDBCB1F0022F143 /* Debug */,
