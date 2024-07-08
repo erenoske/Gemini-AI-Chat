@@ -14,6 +14,9 @@
 		B02732BF2C32F9DB0053C7BC /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02732BE2C32F9DB0053C7BC /* ChatModel.swift */; };
 		B02732C22C332DE50053C7BC /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = B02732C12C332DE50053C7BC /* SwiftyMarkdown */; };
 		B02732C82C3395860053C7BC /* UserChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02732C72C3395860053C7BC /* UserChatTableViewCell.swift */; };
+		B02732CF2C38844A0053C7BC /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02732CE2C38844A0053C7BC /* MenuView.swift */; };
+		B02732D82C38AFA40053C7BC /* SideMenu in Frameworks */ = {isa = PBXBuildFile; productRef = B02732D72C38AFA40053C7BC /* SideMenu */; };
+		B02732DC2C38B52A0053C7BC /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02732DB2C38B52A0053C7BC /* MenuViewController.swift */; };
 		B0D1CBBF2BDBCB1D0022F143 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1CBBE2BDBCB1D0022F143 /* AppDelegate.swift */; };
 		B0D1CBC12BDBCB1D0022F143 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1CBC02BDBCB1D0022F143 /* SceneDelegate.swift */; };
 		B0D1CBC82BDBCB1F0022F143 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0D1CBC72BDBCB1F0022F143 /* Assets.xcassets */; };
@@ -46,6 +49,8 @@
 		B02732BC2C32F8B00053C7BC /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		B02732BE2C32F9DB0053C7BC /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
 		B02732C72C3395860053C7BC /* UserChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserChatTableViewCell.swift; sourceTree = "<group>"; };
+		B02732CE2C38844A0053C7BC /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		B02732DB2C38B52A0053C7BC /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B0D1CBBB2BDBCB1D0022F143 /* swift-login-system.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "swift-login-system.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0D1CBBE2BDBCB1D0022F143 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B0D1CBC02BDBCB1D0022F143 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -80,6 +85,7 @@
 				B0D1CBEF2BDC3DC00022F143 /* FirebaseFirestore in Frameworks */,
 				B0D1CBF12BDC3DC00022F143 /* FirebaseStorage in Frameworks */,
 				B02732B42C31B5800053C7BC /* GoogleGenerativeAI in Frameworks */,
+				B02732D82C38AFA40053C7BC /* SideMenu in Frameworks */,
 				B02732C22C332DE50053C7BC /* SwiftyMarkdown in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -119,6 +125,7 @@
 				B0D1CBE22BDBDE210022F143 /* CustomButton.swift */,
 				B0D1CBDE2BDBCD9B0022F143 /* AuthHeaderView.swift */,
 				B0D1CBE02BDBD8340022F143 /* CustomTextField.swift */,
+				B02732CE2C38844A0053C7BC /* MenuView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -131,6 +138,7 @@
 				B0D1CBD92BDBCC760022F143 /* HomeViewController.swift */,
 				B0D1CBDB2BDBCC9F0022F143 /* RegisterViewController.swift */,
 				B0D1CBE42BDBEA720022F143 /* WebViewController.swift */,
+				B02732DB2C38B52A0053C7BC /* MenuViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -231,6 +239,7 @@
 				B0D1CBF02BDC3DC00022F143 /* FirebaseStorage */,
 				B02732B32C31B5800053C7BC /* GoogleGenerativeAI */,
 				B02732C12C332DE50053C7BC /* SwiftyMarkdown */,
+				B02732D72C38AFA40053C7BC /* SideMenu */,
 			);
 			productName = "swift-login-system";
 			productReference = B0D1CBBB2BDBCB1D0022F143 /* swift-login-system.app */;
@@ -264,6 +273,7 @@
 				B0D1CBEB2BDC3DBF0022F143 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				B02732B22C31B5800053C7BC /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
 				B02732C02C332DE50053C7BC /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */,
+				B02732D62C38AFA40053C7BC /* XCRemoteSwiftPackageReference "SideMenu" */,
 			);
 			productRefGroup = B0D1CBBC2BDBCB1D0022F143 /* Products */;
 			projectDirPath = "";
@@ -293,12 +303,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B02732CF2C38844A0053C7BC /* MenuView.swift in Sources */,
 				B0D1CBD62BDBCC490022F143 /* LoginViewController.swift in Sources */,
 				B02732B82C31B63E0053C7BC /* APIKey.swift in Sources */,
 				B0D1CBE72BDC14A70022F143 /* AlertManager.swift in Sources */,
 				B0D1CBD82BDBCC5B0022F143 /* ForgotPasswordViewController.swift in Sources */,
 				B0D1CBF32BDC3F170022F143 /* AuthService.swift in Sources */,
 				B0D1CBF82BDC44030022F143 /* LoginUserRequest.swift in Sources */,
+				B02732DC2C38B52A0053C7BC /* MenuViewController.swift in Sources */,
 				B0D1CBE32BDBDE210022F143 /* CustomButton.swift in Sources */,
 				B0D1CBE52BDBEA720022F143 /* WebViewController.swift in Sources */,
 				B0D1CBFE2BDD972E0022F143 /* User.swift in Sources */,
@@ -553,6 +565,14 @@
 				minimumVersion = 1.2.4;
 			};
 		};
+		B02732D62C38AFA40053C7BC /* XCRemoteSwiftPackageReference "SideMenu" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jonkykong/SideMenu";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.5.0;
+			};
+		};
 		B0D1CBEB2BDC3DBF0022F143 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -573,6 +593,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B02732C02C332DE50053C7BC /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */;
 			productName = SwiftyMarkdown;
+		};
+		B02732D72C38AFA40053C7BC /* SideMenu */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B02732D62C38AFA40053C7BC /* XCRemoteSwiftPackageReference "SideMenu" */;
+			productName = SideMenu;
 		};
 		B0D1CBEC2BDC3DC00022F143 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;

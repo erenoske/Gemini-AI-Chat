@@ -8,6 +8,7 @@
 import UIKit
 import SwiftyMarkdown
 import PhotosUI
+import SideMenu
 
 class HomeViewController: UIViewController {
     
@@ -15,7 +16,12 @@ class HomeViewController: UIViewController {
     
     private var textViewHeightConstraint: NSLayoutConstraint!
     
+    private var buttonsStackViewConstraint: NSLayoutConstraint!
+    
     private var viewModel: ChatViewModel
+    
+    private var isMenuOpen = false
+
     
     private let imageView: UIImageView = {
         let iv = UIImageView()
@@ -79,6 +85,24 @@ class HomeViewController: UIViewController {
         return button
     }()
     
+    private lazy var cameraButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = .label
+        button.setImage(UIImage(systemName: "camera"), for: .normal)
+        button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        return button
+    }()
+    
+    private lazy var buttonsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [photoButton, cameraButton])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 15
+        return stackView
+    }()
+    
     init(viewModel: ChatViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -92,17 +116,17 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
         hideKeyboardWhenTappedAround()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         sentButton.addTarget(self, action: #selector(didTapSentButton), for: .touchUpInside)
         photoButton.addTarget(self, action: #selector(didTabSentPhoto), for: .touchUpInside)
+        cameraButton.addTarget(self, action: #selector(didTabCameraButton), for: .touchUpInside)
         
         title = "Gemini"
         view.backgroundColor = .systemBackground
-
+        
         setupUI()
+        configureSideMenu()
         configureNavbar()
         applyConstraints()
         
@@ -116,7 +140,7 @@ class HomeViewController: UIViewController {
         logoutButton.tintColor = .label
         navigationItem.rightBarButtonItem = logoutButton
         
-        let burgerButton = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: nil, action: nil)
+        let burgerButton = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(didTabMenuBar))
         burgerButton.tintColor = .label
         navigationItem.leftBarButtonItem = burgerButton
         
@@ -130,6 +154,15 @@ class HomeViewController: UIViewController {
         navigationController?.navigationBar.standardAppearance = standardNavAppearance
     }
     
+    private func configureSideMenu() {
+        let menu = SideMenuNavigationController(rootViewController: MenuViewController())
+        menu.leftSide = true
+        menu.menuWidth = view.frame.width * 0.8
+        menu.presentationStyle = .viewSlideOutMenuIn
+        SideMenuManager.default.leftMenuNavigationController = menu
+        SideMenuManager.default.addPanGestureToPresent(toView: self.view)
+    }
+    
     private func setupUI() {
         view.backgroundColor = .systemBackground
         
@@ -137,15 +170,10 @@ class HomeViewController: UIViewController {
         view.addSubview(imageView)
         view.addSubview(textView)
         view.addSubview(sentButton)
-        view.addSubview(photoButton)
+        view.addSubview(buttonsStackView)
         textView.addSubview(placeHolder)
-    }
-    
-    @objc func keyboardWillShow() {
-        let bottomOffset = CGPoint(x: 0, y: tableView.contentSize.height - tableView.bounds.size.height + tableView.contentInset.bottom)
-        if bottomOffset.y > 0 {
-            tableView.setContentOffset(bottomOffset, animated: false)
-        }
+        let menuView = MenuView(frame: CGRect(x: -250, y: 0, width: 250, height: self.view.frame.height))
+        view.addSubview(menuView)
     }
     
     private func adjustTextFieldHeight() {
@@ -177,8 +205,9 @@ class HomeViewController: UIViewController {
     
     private func applyConstraints() {
         textViewHeightConstraint = textView.heightAnchor.constraint(equalToConstant: 40)
+        buttonsStackViewConstraint = buttonsStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15)
         NSLayoutConstraint.activate([
-            textView.leadingAnchor.constraint(equalTo: photoButton.leadingAnchor, constant: 35),
+            textView.leadingAnchor.constraint(equalTo: buttonsStackView.leadingAnchor, constant: 75),
             textView.trailingAnchor.constraint(equalTo: sentButton.trailingAnchor, constant: -30),
             textView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor, constant: -10),
             textViewHeightConstraint,
@@ -195,14 +224,30 @@ class HomeViewController: UIViewController {
             sentButton.centerYAnchor.constraint(equalTo: textView.centerYAnchor),
             sentButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
             
-            photoButton.centerYAnchor.constraint(equalTo: textView.centerYAnchor),
-            photoButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            buttonsStackView.centerYAnchor.constraint(equalTo: textView.centerYAnchor),
+            buttonsStackViewConstraint,
             
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             imageView.widthAnchor.constraint(equalToConstant: 90),
             imageView.heightAnchor.constraint(equalToConstant: 90)
             ])
+    }
+    
+    private func scrollToRow() {
+        let newIndexPath = IndexPath(row: titles.count - 1, section: 0)
+        tableView.scrollToRow(at: newIndexPath, at: .top, animated: true)
+    }
+}
+
+// MARK: - Action
+extension HomeViewController {
+    
+    @objc func keyboardWillShow() {
+        let bottomOffset = CGPoint(x: 0, y: tableView.contentSize.height - tableView.bounds.size.height + tableView.contentInset.bottom)
+        if bottomOffset.y > 0 {
+            tableView.setContentOffset(bottomOffset, animated: false)
+        }
     }
     
     @objc private func didTabLogout() {
@@ -218,11 +263,6 @@ class HomeViewController: UIViewController {
                 sceneDelegate.checkAuthentication()
             }
         }
-    }
-    
-    private func scrollToRow() {
-        let newIndexPath = IndexPath(row: titles.count - 1, section: 0)
-        tableView.scrollToRow(at: newIndexPath, at: .top, animated: true)
     }
     
     @objc private func didTapSentButton() {
@@ -261,8 +301,25 @@ class HomeViewController: UIViewController {
         present(picker, animated: true)
         
     }
+    
+    @objc func didTabCameraButton() {
+        guard let text = textView.text, !text.isEmpty else {
+            AlertManager.showPhotoError(on: self)
+            return
+        }
+        
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.delegate = self
+        present(picker, animated: true)
+    }
+    
+    @objc func didTabMenuBar() {
+        present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
+    }
 }
 
+// MARK: - UITableView
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -277,6 +334,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: UserChatTableViewCell.identifier, for: indexPath) as? UserChatTableViewCell else { return UITableViewCell() }
             
             cell.configure(with: model.parts, and: model.image)
+            cell.backgroundColor = .clear
             
             return cell
         } else {
@@ -286,6 +344,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         
             cell.textLabel?.attributedText = markdownText.attributedString()
             cell.textLabel?.numberOfLines = 0
+            cell.backgroundColor = .clear
             
             return cell
         }
@@ -295,6 +354,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
 }
 
+// MARK: - UITextView
 extension HomeViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         placeHolder.isHidden = !textView.text.isEmpty
@@ -340,11 +400,14 @@ extension HomeViewController: PHPickerViewControllerDelegate {
                     return
                 }
                 
+                guard let selectedImage = image as? UIImage else { return }
+                
+                titles.append(ChatModel(role: "user", parts: textView.text, image: selectedImage))
+                titles.append(ChatModel(role: "model", parts: "Yükleniyor...", image: nil))
+                reloadData()
+                
                 
                 DispatchQueue.main.async {
-                    guard let selectedImage = image as? UIImage else { return }
-                    self.titles.append(ChatModel(role: "user", parts: self.textView.text, image: selectedImage))
-                    self.titles.append(ChatModel(role: "model", parts: "Yükleniyor...", image: nil))
                     self.viewModel.sendMessage(with: self.textView.text, and: self.titles, image: selectedImage)
                     self.imageView.isHidden = true
                     self.textView.resignFirstResponder()
@@ -352,6 +415,35 @@ extension HomeViewController: PHPickerViewControllerDelegate {
                     self.textViewDidChange(self.textView)
                 }
             }
+        }
+    }
+}
+
+// MARK: - UIImagePickerController
+extension HomeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        picker.dismiss(animated: true, completion: nil)
+        
+        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
+            return
+        }
+        
+        titles.append(ChatModel(role: "user", parts: textView.text, image: image))
+        titles.append(ChatModel(role: "model", parts: "Yükleniyor...", image: nil))
+        reloadData()
+        
+        
+        DispatchQueue.main.async {
+            self.viewModel.sendMessage(with: self.textView.text, and: self.titles, image: image)
+            self.imageView.isHidden = true
+            self.textView.resignFirstResponder()
+            self.textView.text = nil
+            self.textViewDidChange(self.textView)
         }
     }
 }

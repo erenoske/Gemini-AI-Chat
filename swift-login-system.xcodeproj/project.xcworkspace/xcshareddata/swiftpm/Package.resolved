@@ -1,5 +1,5 @@
 {
-  "originHash" : "669875f2c459a7939220a2c765e8e3e31198dacea51546b12f5822ade008adc4",
+  "originHash" : "34bbde2731f5a54dca424f424ea4bf001e09ef8b410cad37a0c44fe8546832d7",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -116,6 +116,15 @@
       "state" : {
         "revision" : "540318ecedd63d883069ae7f1ed811a2df00b6ac",
         "version" : "2.4.0"
+      }
+    },
+    {
+      "identity" : "sidemenu",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jonkykong/SideMenu",
+      "state" : {
+        "revision" : "8bd4fd128923cf5494fa726839af8afe12908ad9",
+        "version" : "6.5.0"
       }
     },
     {
