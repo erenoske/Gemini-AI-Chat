@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/eren/Desktop/ios/project/Gemini-AI-Chat/Gemini-AI-Chat.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>

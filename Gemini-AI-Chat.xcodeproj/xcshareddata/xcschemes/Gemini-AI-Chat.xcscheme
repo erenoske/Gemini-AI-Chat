@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B0D1CBBA2BDBCB1D0022F143"
-               BuildableName = "swift-login-system.app"
+               BuildableName = "gemini-ai-chat.app"
                BlueprintName = "swift-login-system"
-               ReferencedContainer = "container:gemini-ai-chat.xcodeproj">
+               ReferencedContainer = "container:Gemini-AI-Chat.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B0D1CBBA2BDBCB1D0022F143"
-            BuildableName = "swift-login-system.app"
+            BuildableName = "gemini-ai-chat.app"
             BlueprintName = "swift-login-system"
-            ReferencedContainer = "container:gemini-ai-chat.xcodeproj">
+            ReferencedContainer = "container:Gemini-AI-Chat.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B0D1CBBA2BDBCB1D0022F143"
-            BuildableName = "swift-login-system.app"
+            BuildableName = "gemini-ai-chat.app"
             BlueprintName = "swift-login-system"
-            ReferencedContainer = "container:gemini-ai-chat.xcodeproj">
+            ReferencedContainer = "container:Gemini-AI-Chat.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

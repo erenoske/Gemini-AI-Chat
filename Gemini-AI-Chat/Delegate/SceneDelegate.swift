@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if Auth.auth().currentUser == nil {
             self.goToController(with: LoginViewController())
         } else {
-            self.goToController(with: HomeViewController(viewModel: ChatViewModel()))
+            self.goToController(with: HomeViewController(viewModel: ChatViewModel(), viewController: MenuViewController()))
         }
     }
     

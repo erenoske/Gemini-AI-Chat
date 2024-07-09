@@ -14,9 +14,13 @@
 		B02732BF2C32F9DB0053C7BC /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02732BE2C32F9DB0053C7BC /* ChatModel.swift */; };
 		B02732C22C332DE50053C7BC /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = B02732C12C332DE50053C7BC /* SwiftyMarkdown */; };
 		B02732C82C3395860053C7BC /* UserChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02732C72C3395860053C7BC /* UserChatTableViewCell.swift */; };
-		B02732CF2C38844A0053C7BC /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02732CE2C38844A0053C7BC /* MenuView.swift */; };
 		B02732D82C38AFA40053C7BC /* SideMenu in Frameworks */ = {isa = PBXBuildFile; productRef = B02732D72C38AFA40053C7BC /* SideMenu */; };
 		B02732DC2C38B52A0053C7BC /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02732DB2C38B52A0053C7BC /* MenuViewController.swift */; };
+		B09F85C52C3C890100F129EB /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09F85C42C3C890100F129EB /* ChatService.swift */; };
+		B09F85C72C3D744800F129EB /* ChatMessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09F85C62C3D744700F129EB /* ChatMessageRequest.swift */; };
+		B09F85C92C3D7C8D00F129EB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B09F85C82C3D7C8D00F129EB /* GoogleService-Info.plist */; };
+		B09F85CB2C3D9A6F00F129EB /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09F85CA2C3D9A6F00F129EB /* ChatMessage.swift */; };
+		B09F85CD2C3DB2DE00F129EB /* ChatTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09F85CC2C3DB2DE00F129EB /* ChatTitle.swift */; };
 		B0D1CBBF2BDBCB1D0022F143 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1CBBE2BDBCB1D0022F143 /* AppDelegate.swift */; };
 		B0D1CBC12BDBCB1D0022F143 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1CBC02BDBCB1D0022F143 /* SceneDelegate.swift */; };
 		B0D1CBC82BDBCB1F0022F143 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0D1CBC72BDBCB1F0022F143 /* Assets.xcassets */; };
@@ -30,7 +34,6 @@
 		B0D1CBE32BDBDE210022F143 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1CBE22BDBDE210022F143 /* CustomButton.swift */; };
 		B0D1CBE52BDBEA720022F143 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1CBE42BDBEA720022F143 /* WebViewController.swift */; };
 		B0D1CBE72BDC14A70022F143 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1CBE62BDC14A70022F143 /* AlertManager.swift */; };
-		B0D1CBEA2BDC3CEB0022F143 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0D1CBE92BDC3CEB0022F143 /* GoogleService-Info.plist */; };
 		B0D1CBED2BDC3DC00022F143 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B0D1CBEC2BDC3DC00022F143 /* FirebaseAuth */; };
 		B0D1CBEF2BDC3DC00022F143 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = B0D1CBEE2BDC3DC00022F143 /* FirebaseFirestore */; };
 		B0D1CBF12BDC3DC00022F143 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = B0D1CBF02BDC3DC00022F143 /* FirebaseStorage */; };
@@ -49,9 +52,13 @@
 		B02732BC2C32F8B00053C7BC /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		B02732BE2C32F9DB0053C7BC /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
 		B02732C72C3395860053C7BC /* UserChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserChatTableViewCell.swift; sourceTree = "<group>"; };
-		B02732CE2C38844A0053C7BC /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		B02732DB2C38B52A0053C7BC /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
-		B0D1CBBB2BDBCB1D0022F143 /* swift-login-system.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "swift-login-system.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B09F85C42C3C890100F129EB /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
+		B09F85C62C3D744700F129EB /* ChatMessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageRequest.swift; sourceTree = "<group>"; };
+		B09F85C82C3D7C8D00F129EB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B09F85CA2C3D9A6F00F129EB /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
+		B09F85CC2C3DB2DE00F129EB /* ChatTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTitle.swift; sourceTree = "<group>"; };
+		B0D1CBBB2BDBCB1D0022F143 /* gemini-ai-chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "gemini-ai-chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0D1CBBE2BDBCB1D0022F143 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B0D1CBC02BDBCB1D0022F143 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B0D1CBC72BDBCB1F0022F143 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -66,7 +73,6 @@
 		B0D1CBE22BDBDE210022F143 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		B0D1CBE42BDBEA720022F143 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		B0D1CBE62BDC14A70022F143 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
-		B0D1CBE92BDC3CEB0022F143 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B0D1CBF22BDC3F170022F143 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		B0D1CBF52BDC3FC30022F143 /* RegisterUserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserRequest.swift; sourceTree = "<group>"; };
 		B0D1CBF72BDC44030022F143 /* LoginUserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUserRequest.swift; sourceTree = "<group>"; };
@@ -125,7 +131,6 @@
 				B0D1CBE22BDBDE210022F143 /* CustomButton.swift */,
 				B0D1CBDE2BDBCD9B0022F143 /* AuthHeaderView.swift */,
 				B0D1CBE02BDBD8340022F143 /* CustomTextField.swift */,
-				B02732CE2C38844A0053C7BC /* MenuView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -154,7 +159,7 @@
 		B0D1CBBC2BDBCB1D0022F143 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B0D1CBBB2BDBCB1D0022F143 /* swift-login-system.app */,
+				B0D1CBBB2BDBCB1D0022F143 /* gemini-ai-chat.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -175,8 +180,8 @@
 		B0D1CBD22BDBCBC40022F143 /* Files */ = {
 			isa = PBXGroup;
 			children = (
+				B09F85C82C3D7C8D00F129EB /* GoogleService-Info.plist */,
 				B02732B52C31B6020053C7BC /* GenerativeAI-Info.plist */,
-				B0D1CBE92BDC3CEB0022F143 /* GoogleService-Info.plist */,
 				B0D1CBCC2BDBCB1F0022F143 /* Info.plist */,
 				B0D1CBC92BDBCB1F0022F143 /* LaunchScreen.storyboard */,
 				B0D1CBC72BDBCB1F0022F143 /* Assets.xcassets */,
@@ -201,6 +206,7 @@
 				B0D1CBF92BDD3F3B0022F143 /* Validator.swift */,
 				B0D1CBFB2BDD4CEC0022F143 /* Extensions.swift */,
 				B02732B72C31B63E0053C7BC /* APIKey.swift */,
+				B09F85C42C3C890100F129EB /* ChatService.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -213,6 +219,9 @@
 				B0D1CBFD2BDD972E0022F143 /* User.swift */,
 				B0D1CBFF2BE569160022F143 /* EmailLinkRequest.swift */,
 				B02732BE2C32F9DB0053C7BC /* ChatModel.swift */,
+				B09F85C62C3D744700F129EB /* ChatMessageRequest.swift */,
+				B09F85CA2C3D9A6F00F129EB /* ChatMessage.swift */,
+				B09F85CC2C3DB2DE00F129EB /* ChatTitle.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -242,7 +251,7 @@
 				B02732D72C38AFA40053C7BC /* SideMenu */,
 			);
 			productName = "swift-login-system";
-			productReference = B0D1CBBB2BDBCB1D0022F143 /* swift-login-system.app */;
+			productReference = B0D1CBBB2BDBCB1D0022F143 /* gemini-ai-chat.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -289,8 +298,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B09F85C92C3D7C8D00F129EB /* GoogleService-Info.plist in Resources */,
 				B0D1CBC82BDBCB1F0022F143 /* Assets.xcassets in Resources */,
-				B0D1CBEA2BDC3CEB0022F143 /* GoogleService-Info.plist in Resources */,
 				B02732B62C31B6020053C7BC /* GenerativeAI-Info.plist in Resources */,
 				B0D1CBCB2BDBCB1F0022F143 /* Base in Resources */,
 			);
@@ -303,14 +312,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B02732CF2C38844A0053C7BC /* MenuView.swift in Sources */,
 				B0D1CBD62BDBCC490022F143 /* LoginViewController.swift in Sources */,
 				B02732B82C31B63E0053C7BC /* APIKey.swift in Sources */,
+				B09F85CD2C3DB2DE00F129EB /* ChatTitle.swift in Sources */,
 				B0D1CBE72BDC14A70022F143 /* AlertManager.swift in Sources */,
 				B0D1CBD82BDBCC5B0022F143 /* ForgotPasswordViewController.swift in Sources */,
 				B0D1CBF32BDC3F170022F143 /* AuthService.swift in Sources */,
 				B0D1CBF82BDC44030022F143 /* LoginUserRequest.swift in Sources */,
 				B02732DC2C38B52A0053C7BC /* MenuViewController.swift in Sources */,
+				B09F85C52C3C890100F129EB /* ChatService.swift in Sources */,
 				B0D1CBE32BDBDE210022F143 /* CustomButton.swift in Sources */,
 				B0D1CBE52BDBEA720022F143 /* WebViewController.swift in Sources */,
 				B0D1CBFE2BDD972E0022F143 /* User.swift in Sources */,
@@ -318,11 +328,13 @@
 				B0D1CBFA2BDD3F3B0022F143 /* Validator.swift in Sources */,
 				B0D1CC002BE569160022F143 /* EmailLinkRequest.swift in Sources */,
 				B0D1CBBF2BDBCB1D0022F143 /* AppDelegate.swift in Sources */,
+				B09F85CB2C3D9A6F00F129EB /* ChatMessage.swift in Sources */,
 				B0D1CBDC2BDBCC9F0022F143 /* RegisterViewController.swift in Sources */,
 				B02732C82C3395860053C7BC /* UserChatTableViewCell.swift in Sources */,
 				B0D1CBF62BDC3FC30022F143 /* RegisterUserRequest.swift in Sources */,
 				B0D1CBE12BDBD8340022F143 /* CustomTextField.swift in Sources */,
 				B0D1CBC12BDBCB1D0022F143 /* SceneDelegate.swift in Sources */,
+				B09F85C72C3D744800F129EB /* ChatMessageRequest.swift in Sources */,
 				B02732BF2C32F9DB0053C7BC /* ChatModel.swift in Sources */,
 				B0D1CBDA2BDBCC760022F143 /* HomeViewController.swift in Sources */,
 				B02732BD2C32F8B00053C7BC /* ChatViewModel.swift in Sources */,
@@ -473,6 +485,8 @@
 				DEVELOPMENT_TEAM = B9ZPR786BL;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Gemini-AI-Chat/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Gemini Chat";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow access to take a picture ";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
@@ -482,8 +496,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "erenoske.com.swift-login-system";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "erenoske.com.gemini-ai-chat";
+				PRODUCT_NAME = "gemini-ai-chat";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -504,6 +518,8 @@
 				DEVELOPMENT_TEAM = B9ZPR786BL;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Gemini-AI-Chat/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Gemini Chat";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow access to take a picture ";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
@@ -513,8 +529,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "erenoske.com.swift-login-system";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "erenoske.com.gemini-ai-chat";
+				PRODUCT_NAME = "gemini-ai-chat";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

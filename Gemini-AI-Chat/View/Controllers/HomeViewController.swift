@@ -12,7 +12,7 @@ import SideMenu
 
 class HomeViewController: UIViewController {
     
-    var titles = [ChatModel]()
+    public var titles = [ChatModel]()
     
     private var textViewHeightConstraint: NSLayoutConstraint!
     
@@ -20,7 +20,11 @@ class HomeViewController: UIViewController {
     
     private var viewModel: ChatViewModel
     
-    private var isMenuOpen = false
+    private var viewController: MenuViewController
+    
+    private var firstMessage = true
+
+    private var id = UUID().uuidString
 
     
     private let imageView: UIImageView = {
@@ -103,10 +107,12 @@ class HomeViewController: UIViewController {
         return stackView
     }()
     
-    init(viewModel: ChatViewModel) {
+    init(viewModel: ChatViewModel, viewController: MenuViewController) {
         self.viewModel = viewModel
+        self.viewController = viewController
         super.init(nibName: nil, bundle: nil)
         viewModel.delegate = self
+        viewController.delegate = self
     }
 
     required init?(coder: NSCoder) {
@@ -136,7 +142,7 @@ class HomeViewController: UIViewController {
     
     
     private func configureNavbar() {
-        let logoutButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(didTabLogout))
+        let logoutButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(didTabNewChat))
         logoutButton.tintColor = .label
         navigationItem.rightBarButtonItem = logoutButton
         
@@ -155,7 +161,7 @@ class HomeViewController: UIViewController {
     }
     
     private func configureSideMenu() {
-        let menu = SideMenuNavigationController(rootViewController: MenuViewController())
+        let menu = SideMenuNavigationController(rootViewController: viewController)
         menu.leftSide = true
         menu.menuWidth = view.frame.width * 0.8
         menu.presentationStyle = .viewSlideOutMenuIn
@@ -172,8 +178,6 @@ class HomeViewController: UIViewController {
         view.addSubview(sentButton)
         view.addSubview(buttonsStackView)
         textView.addSubview(placeHolder)
-        let menuView = MenuView(frame: CGRect(x: -250, y: 0, width: 250, height: self.view.frame.height))
-        view.addSubview(menuView)
     }
     
     private func adjustTextFieldHeight() {
@@ -201,6 +205,19 @@ class HomeViewController: UIViewController {
             self.tableView.reloadData()
             self.scrollToRow()
         }
+    }
+    
+    private func reloadChatData() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.tableView.reloadData()
+            self.scrollToChatRow()
+        }
+    }
+    
+    private func scrollToChatRow() {
+        let newIndexPath = IndexPath(row: titles.count - 1, section: 0)
+        tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: false)
     }
     
     private func applyConstraints() {
@@ -250,19 +267,12 @@ extension HomeViewController {
         }
     }
     
-    @objc private func didTabLogout() {
-        AuthService.shared.signOut { [weak self] error in
-            guard let self = self else { return }
-            
-            if let error = error {
-                AlertManager.showLogoutError(on: self, with: error)
-            }
-            
-            if let sceneDelegate = self.view.window?.windowScene?.delegate as?
-                SceneDelegate {
-                sceneDelegate.checkAuthentication()
-            }
-        }
+    @objc private func didTabNewChat() {
+        titles.removeAll()
+        tableView.reloadData()
+        id = UUID().uuidString
+        firstMessage = true
+        imageView.isHidden = false
     }
     
     @objc private func didTapSentButton() {
@@ -275,13 +285,21 @@ extension HomeViewController {
         textViewDidChange(textView)
         
         titles.append(ChatModel(role: "user", parts: text, image: nil))
-        titles.append(ChatModel(role: "model", parts: "Yükleniyor...", image: nil))
+        titles.append(ChatModel(role: "model", parts: "Loading...", image: nil))
         reloadData()
         
+        let request = ChatMessageRequest(id: id, role: "user", parts: text)
+        ChatService.shared.uploadMessage(with: request)
+        
+        if firstMessage {
+            ChatService.shared.uploadTitles(with: text, and: id)
+            firstMessage = false
+        }
+        
         if titles.count == 1 {
-            viewModel.sendMessage(with: text, and: nil)
+            viewModel.sendMessage(with: text, and: nil, id: id)
         } else {
-            viewModel.sendMessage(with: text, and: titles)
+            viewModel.sendMessage(with: text, and: titles, id: id)
         }
         
     }
@@ -373,12 +391,38 @@ extension HomeViewController: UITextViewDelegate {
     }
 }
 
+// MARK: - ChatViewModelDelegate
 extension HomeViewController: ChatViewModelDelegate {
     func updateLastMessage(with message: String) {
         
         titles.removeLast()
         titles.append(ChatModel(role: "model", parts: message, image: nil))
         reloadData()
+    }
+    
+}
+
+// MARK: - MenuViewControllerDelegate
+extension HomeViewController: MenuViewControllerDelegate {
+    func didTabTitle(title: ChatTitle) {
+        id = title.chatId
+        titles.removeAll()
+        firstMessage = false
+        imageView.isHidden = true
+        SideMenuManager.default.leftMenuNavigationController?.dismiss(animated: true, completion: nil)
+        ChatService.shared.fetchChat(chatId: title.chatId) { data, error in
+            
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            
+            if let data = data {
+                self.titles = data
+                DispatchQueue.main.async {
+                    self.reloadChatData()
+                }
+            }
+        }
     }
     
 }
@@ -402,13 +446,15 @@ extension HomeViewController: PHPickerViewControllerDelegate {
                 
                 guard let selectedImage = image as? UIImage else { return }
                 
-                titles.append(ChatModel(role: "user", parts: textView.text, image: selectedImage))
-                titles.append(ChatModel(role: "model", parts: "Yükleniyor...", image: nil))
-                reloadData()
+                DispatchQueue.main.async {
+                    self.titles.append(ChatModel(role: "user", parts: self.textView.text, image: selectedImage))
+                    self.titles.append(ChatModel(role: "model", parts: "Loading...", image: nil))
+                    self.reloadData()
+                }
                 
                 
                 DispatchQueue.main.async {
-                    self.viewModel.sendMessage(with: self.textView.text, and: self.titles, image: selectedImage)
+                    self.viewModel.sendMessage(with: self.textView.text, and: self.titles, id: self.id, image: selectedImage)
                     self.imageView.isHidden = true
                     self.textView.resignFirstResponder()
                     self.textView.text = nil
@@ -429,17 +475,19 @@ extension HomeViewController: UIImagePickerControllerDelegate, UINavigationContr
         
         picker.dismiss(animated: true, completion: nil)
         
-        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
+        guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
             return
         }
         
-        titles.append(ChatModel(role: "user", parts: textView.text, image: image))
-        titles.append(ChatModel(role: "model", parts: "Yükleniyor...", image: nil))
-        reloadData()
+        DispatchQueue.main.async {
+            self.titles.append(ChatModel(role: "user", parts: self.textView.text, image: selectedImage))
+            self.titles.append(ChatModel(role: "model", parts: "Loading...", image: nil))
+            self.reloadData()
+        }
         
         
         DispatchQueue.main.async {
-            self.viewModel.sendMessage(with: self.textView.text, and: self.titles, image: image)
+            self.viewModel.sendMessage(with: self.textView.text, and: self.titles, id: self.id, image: selectedImage)
             self.imageView.isHidden = true
             self.textView.resignFirstResponder()
             self.textView.text = nil
