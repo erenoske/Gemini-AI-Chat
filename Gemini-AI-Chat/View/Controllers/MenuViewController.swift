@@ -9,6 +9,7 @@ import UIKit
 
 protocol MenuViewControllerDelegate: AnyObject {
     func didTabTitle(title: ChatTitle)
+    func didTabDelete(title: ChatTitle)
 }
 
 class MenuViewController: UIViewController {
@@ -32,7 +33,7 @@ class MenuViewController: UIViewController {
         iv.contentMode = .scaleAspectFill
         iv.image = UIImage(named: "profilePicture")
         iv.layer.masksToBounds = true
-        iv.layer.cornerRadius = 20
+        iv.layer.cornerRadius = 10
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
@@ -40,7 +41,7 @@ class MenuViewController: UIViewController {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.font = .systemFont(ofSize: 17, weight: .regular)
         label.text = "Loading..."
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -101,7 +102,7 @@ class MenuViewController: UIViewController {
     
     private func applyConstraints() {
         NSLayoutConstraint.activate([
-            profilePicture.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -15),
+            profilePicture.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
             profilePicture.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             profilePicture.widthAnchor.constraint(equalToConstant: 40),
             profilePicture.heightAnchor.constraint(equalToConstant: 40),
@@ -113,7 +114,7 @@ class MenuViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: profilePicture.topAnchor, constant: -15),
+            tableView.bottomAnchor.constraint(equalTo: profilePicture.topAnchor, constant: -10),
         ])
     }
 }
@@ -130,6 +131,9 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.textLabel?.text = text
         cell.backgroundColor = .clear
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = .secondarySystemGroupedBackground
+        cell.selectedBackgroundView = bgColorView
         return cell
     }
     
@@ -137,4 +141,25 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         delegate?.didTabTitle(title: chatTitles[indexPath.row])
     }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let config = UIContextMenuConfiguration(
+            identifier: nil,
+            previewProvider: nil) { _ in
+                let deleteAction = UIAction(title: "Delete", subtitle: nil, image: UIImage(systemName: "trash"), identifier: nil, discoverabilityTitle: nil, state: .off) { [self] _ in
+                    delegate?.didTabDelete(title: chatTitles[indexPath.row])
+                    ChatService.shared.deleteTitle(chatId: chatTitles[indexPath.row].chatId)
+                }
+                deleteAction.attributes = .destructive
+                
+                return UIMenu(title: "", image: nil, identifier: nil, options: .displayInline, children: [deleteAction])
+            }
+        return config
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.layer.cornerRadius = 10
+        cell.layer.masksToBounds = true
+    }
+    
 }

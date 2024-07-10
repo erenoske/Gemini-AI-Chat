@@ -76,7 +76,7 @@ class ChatService {
         
         db.collection("titles")
             .whereField("userid", isEqualTo: userUID)
-            .order(by: "createdTime", descending: false)
+            .order(by: "createdTime", descending: true)
             .addSnapshotListener { snapshot, error in
                 if let error = error {
                     print(error.localizedDescription)
@@ -138,5 +138,28 @@ class ChatService {
                 completion(chatModels, nil)
             }
         
+    }
+    
+    func deleteTitle(chatId: String) {
+        let db = Firestore.firestore()
+        db.collection("titles").whereField("chatid", isEqualTo: chatId).getDocuments { snapshot, error in
+            if let error = error {
+                print("Error fetching document: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let documents = snapshot?.documents else {
+                print("No documents found")
+                return
+            }
+            
+            for document in documents {
+                document.reference.delete { error in
+                    if let error = error {
+                        print("Error deleting document: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
     }
 }

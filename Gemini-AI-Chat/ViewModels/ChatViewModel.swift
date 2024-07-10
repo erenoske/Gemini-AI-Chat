@@ -19,6 +19,8 @@ class ChatViewModel {
     
     private let model = GenerativeModel(name: "gemini-1.5-flash", apiKey: APIKey.default)
     
+    public var firstMessage = true
+    
     func sendMessage(with text: String, and history: [ChatModel]?, id: String , image: UIImage? = nil) {
         Task {
             do {
@@ -42,9 +44,20 @@ class ChatViewModel {
                 }
                 
                 guard let textResponse = response.text else { return }
-                delegate?.updateLastMessage(with: textResponse)
+                
+                let userModel = ChatMessageRequest(id: id, role: "user", parts: text)
+                ChatService.shared.uploadMessage(with: userModel)
+                
                 let model = ChatMessageRequest(id: id, role: "model", parts: textResponse)
                 ChatService.shared.uploadMessage(with: model)
+                
+                if firstMessage {
+                    ChatService.shared.uploadTitles(with: text, and: id)
+                    firstMessage = false
+                }
+                
+                delegate?.updateLastMessage(with: textResponse)
+                
             } catch {
                 delegate?.updateLastMessage(with: error.localizedDescription)
             }

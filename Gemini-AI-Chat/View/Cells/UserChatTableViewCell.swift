@@ -66,7 +66,7 @@ class UserChatTableViewCell: UITableViewCell {
             messageBackgroundView.topAnchor.constraint(equalTo: photoView.bottomAnchor, constant: 10),
             messageBackgroundView.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: 48),
             messageBackgroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            messageBackgroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            messageBackgroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             
             messageLabel.topAnchor.constraint(equalTo: messageBackgroundView.topAnchor, constant: 10),
             messageLabel.leadingAnchor.constraint(equalTo: messageBackgroundView.leadingAnchor, constant: 10),

@@ -21,8 +21,6 @@ class HomeViewController: UIViewController {
     private var viewModel: ChatViewModel
     
     private var viewController: MenuViewController
-    
-    private var firstMessage = true
 
     private var id = UUID().uuidString
 
@@ -255,6 +253,21 @@ class HomeViewController: UIViewController {
         let newIndexPath = IndexPath(row: titles.count - 1, section: 0)
         tableView.scrollToRow(at: newIndexPath, at: .top, animated: true)
     }
+    
+    private func getMessage(at index: Int) -> String {
+        return titles[index].parts
+    }
+
+    private func removeMarkdownFormatting(from text: String) -> String {
+        var cleanedText = text
+        
+        cleanedText = cleanedText.replacingOccurrences(of: #"(\*{1,2}|_{1,2}|`{1,2}|~{1,2})"#, with: "", options: .regularExpression)
+        
+        cleanedText = cleanedText.replacingOccurrences(of: #"!\?$begin:math:display$.*?$end:math:display$$begin:math:text$.*?$end:math:text$"#, with: "", options: .regularExpression)
+        cleanedText = cleanedText.replacingOccurrences(of: #"$begin:math:display$.*?$end:math:display$$begin:math:text$.*?$end:math:text$"#, with: "", options: .regularExpression)
+        
+        return cleanedText
+    }
 }
 
 // MARK: - Action
@@ -271,7 +284,7 @@ extension HomeViewController {
         titles.removeAll()
         tableView.reloadData()
         id = UUID().uuidString
-        firstMessage = true
+        viewModel.firstMessage = true
         imageView.isHidden = false
     }
     
@@ -287,14 +300,6 @@ extension HomeViewController {
         titles.append(ChatModel(role: "user", parts: text, image: nil))
         titles.append(ChatModel(role: "model", parts: "Loading...", image: nil))
         reloadData()
-        
-        let request = ChatMessageRequest(id: id, role: "user", parts: text)
-        ChatService.shared.uploadMessage(with: request)
-        
-        if firstMessage {
-            ChatService.shared.uploadTitles(with: text, and: id)
-            firstMessage = false
-        }
         
         if titles.count == 1 {
             viewModel.sendMessage(with: text, and: nil, id: id)
@@ -357,18 +362,70 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-            
+              
+              for subview in cell.contentView.subviews {
+                  subview.removeFromSuperview()
+              }
+              
             let markdownText = SwiftyMarkdown(string: titles[indexPath.row].parts)
-        
-            cell.textLabel?.attributedText = markdownText.attributedString()
-            cell.textLabel?.numberOfLines = 0
-            cell.backgroundColor = .clear
-            
-            return cell
+              let attributedText = markdownText.attributedString()
+              
+              let textView = UITextView(frame: cell.contentView.bounds)
+              textView.attributedText = attributedText
+              textView.isEditable = false
+              textView.isScrollEnabled = false
+              textView.dataDetectorTypes = [.link]
+              textView.delegate = self
+              
+              cell.contentView.addSubview(textView)
+              
+              textView.translatesAutoresizingMaskIntoConstraints = false
+              NSLayoutConstraint.activate([
+                  textView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+                  textView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor),
+                  textView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+                  textView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor)
+              ])
+              
+              cell.backgroundColor = .clear
+              
+              return cell
         }
+        
 
 
     }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        let selectedMessage = getMessage(at: indexPath.row)
+        let cleanSelectedMessage = removeMarkdownFormatting(from: selectedMessage)
+        
+        let config = UIContextMenuConfiguration(
+            identifier: nil,
+            previewProvider: nil) { _ in
+                let copyAction = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.doc")) { _ in
+                    UIPasteboard.general.string = cleanSelectedMessage
+                }
+                
+                let showTextAction = UIAction(title: "Select Text", image: UIImage(systemName: "text.viewfinder")) { _ in
+                    let textDisplayVC = TextDisplayViewController(text: cleanSelectedMessage)
+                    
+                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                       let sceneDelegate = windowScene.delegate as? SceneDelegate,
+                       let rootViewController = sceneDelegate.window?.rootViewController {
+                        
+                        rootViewController.present(textDisplayVC, animated: true, completion: nil)
+                    }
+                }
+                
+                return UIMenu(title: "", image: nil, identifier: nil, options: .displayInline, children: [copyAction, showTextAction])
+            }
+        
+        return config
+    }
+
+
     
 }
 
@@ -395,7 +452,10 @@ extension HomeViewController: UITextViewDelegate {
 extension HomeViewController: ChatViewModelDelegate {
     func updateLastMessage(with message: String) {
         
-        titles.removeLast()
+        if titles.count > 0 {
+            titles.removeLast()
+        }
+        
         titles.append(ChatModel(role: "model", parts: message, image: nil))
         reloadData()
     }
@@ -404,10 +464,22 @@ extension HomeViewController: ChatViewModelDelegate {
 
 // MARK: - MenuViewControllerDelegate
 extension HomeViewController: MenuViewControllerDelegate {
+    
+    func didTabDelete(title: ChatTitle) {
+        if id == title.chatId {
+            id = UUID().uuidString
+            titles.removeAll()
+            viewModel.firstMessage = true
+            imageView.isHidden = false
+            tableView.reloadData()
+            SideMenuManager.default.leftMenuNavigationController?.dismiss(animated: true, completion: nil)
+        }
+    }
+    
     func didTabTitle(title: ChatTitle) {
         id = title.chatId
         titles.removeAll()
-        firstMessage = false
+        viewModel.firstMessage = false
         imageView.isHidden = true
         SideMenuManager.default.leftMenuNavigationController?.dismiss(animated: true, completion: nil)
         ChatService.shared.fetchChat(chatId: title.chatId) { data, error in
@@ -477,6 +549,15 @@ extension HomeViewController: UIImagePickerControllerDelegate, UINavigationContr
         
         guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
             return
+        }
+        
+        DispatchQueue.main.async {
+            let request = ChatMessageRequest(id: self.id, role: "user", parts: self.textView.text)
+            ChatService.shared.uploadMessage(with: request)
+        }
+        
+        DispatchQueue.main.async {
+            ChatService.shared.uploadTitles(with: self.textView.text, and: self.id)
         }
         
         DispatchQueue.main.async {
