@@ -10,7 +10,7 @@ import SwiftyMarkdown
 import PhotosUI
 import SideMenu
 
-class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController {
     
     public var titles = [ChatModel]()
     
@@ -33,7 +33,7 @@ class HomeViewController: UIViewController {
         return iv
     }()
     
-    private let tableView: UITableView = {
+    private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .systemBackground
         tableView.allowsSelection = false
@@ -42,6 +42,8 @@ class HomeViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
         tableView.sectionFooterHeight = 0
+        tableView.delegate = self
+        tableView.dataSource = self
         return tableView
     }()
     
@@ -126,20 +128,19 @@ class HomeViewController: UIViewController {
         photoButton.addTarget(self, action: #selector(didTabSentPhoto), for: .touchUpInside)
         cameraButton.addTarget(self, action: #selector(didTabCameraButton), for: .touchUpInside)
         
-        title = "Gemini"
         view.backgroundColor = .systemBackground
         
         setupUI()
         configureSideMenu()
         configureNavbar()
         applyConstraints()
-        
-        tableView.delegate = self
-        tableView.dataSource = self
+
     }
     
     
     private func configureNavbar() {
+        title = "Gemini"
+        
         let logoutButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(didTabNewChat))
         logoutButton.tintColor = .label
         navigationItem.rightBarButtonItem = logoutButton
@@ -549,15 +550,6 @@ extension HomeViewController: UIImagePickerControllerDelegate, UINavigationContr
         
         guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
             return
-        }
-        
-        DispatchQueue.main.async {
-            let request = ChatMessageRequest(id: self.id, role: "user", parts: self.textView.text)
-            ChatService.shared.uploadMessage(with: request)
-        }
-        
-        DispatchQueue.main.async {
-            ChatService.shared.uploadTitles(with: self.textView.text, and: self.id)
         }
         
         DispatchQueue.main.async {

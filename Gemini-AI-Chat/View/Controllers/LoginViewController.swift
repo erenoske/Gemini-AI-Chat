@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+final class LoginViewController: UIViewController {
     
     private let headerView = AuthHeaderView(title: "Sign In", subTitle: "Sign in to your account")
     private let emailField = CustomTextField(fieldType: .email)

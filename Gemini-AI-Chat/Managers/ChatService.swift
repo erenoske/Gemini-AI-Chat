@@ -9,7 +9,7 @@
 import FirebaseFirestore
 import FirebaseAuth
 
-class ChatService {
+final class ChatService {
     
     public static let shared = ChatService()
     

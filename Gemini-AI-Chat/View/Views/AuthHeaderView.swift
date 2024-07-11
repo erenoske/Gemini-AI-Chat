@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AuthHeaderView: UIView {
+final class AuthHeaderView: UIView {
     
     private let logoImageView: UIImageView = {
         let iv = UIImageView()

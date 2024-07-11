@@ -12,19 +12,21 @@ protocol MenuViewControllerDelegate: AnyObject {
     func didTabDelete(title: ChatTitle)
 }
 
-class MenuViewController: UIViewController {
+final class MenuViewController: UIViewController {
     
     weak var delegate: MenuViewControllerDelegate?
     
     private var chatTitles = [ChatTitle]()
     
-    private let tableView: UITableView = {
+    private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .systemBackground
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
         tableView.sectionFooterHeight = 0
+        tableView.delegate = self
+        tableView.dataSource = self
         return tableView
     }()
     
@@ -46,7 +48,26 @@ class MenuViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    private lazy var logoutButton: UIButton = {
+        
+        var configuration = UIButton.Configuration.plain()
+        configuration.title = "Çıkış Yap"
+        configuration.imagePadding = 10
+        
+        let button = UIButton(configuration: configuration)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 3
+        button.tintColor = .label
+        button.layer.masksToBounds = true
+        button.layer.borderColor = UIColor.secondaryLabel.cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(didTabLogoutButton), for: .touchUpInside)
+        return button
+    }()
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -91,13 +112,11 @@ class MenuViewController: UIViewController {
     private func setupUI() {
         view.addSubview(profilePicture)
         view.addSubview(nameLabel)
+        view.addSubview(logoutButton)
         view.addSubview(tableView)
         
         title = "Messages"
         view.backgroundColor = .systemBackground
-        
-        tableView.delegate = self
-        tableView.dataSource = self
     }
     
     private func applyConstraints() {
@@ -109,7 +128,10 @@ class MenuViewController: UIViewController {
             
             nameLabel.centerYAnchor.constraint(equalTo: profilePicture.centerYAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: profilePicture.trailingAnchor, constant: 15),
-            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),  // Düzeltilmiş negatif constant
+            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            
+            logoutButton.centerYAnchor.constraint(equalTo: profilePicture.centerYAnchor),
+            logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -119,6 +141,25 @@ class MenuViewController: UIViewController {
     }
 }
 
+// MARK: - Action
+extension MenuViewController {
+    @objc func didTabLogoutButton() {
+        AuthService.shared.signOut { [weak self] error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                AlertManager.showLogoutError(on: self, with: error)
+            }
+            
+            if let sceneDelegate = self.view.window?.windowScene?.delegate as?
+                SceneDelegate {
+                sceneDelegate.checkAuthentication()
+            }
+        }
+    }
+}
+
+// MARK: - UITableViewDelegate
 extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return chatTitles.count

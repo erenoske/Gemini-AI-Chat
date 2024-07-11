@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class TextDisplayViewController: UIViewController {
+final class TextDisplayViewController: UIViewController {
     
     private let text: String
     

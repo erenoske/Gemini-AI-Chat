@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RegisterViewController: UIViewController {
+final class RegisterViewController: UIViewController {
     
     private let headerView = AuthHeaderView(title: "Sign Up", subTitle: "Create your account")
     private let usernameField = CustomTextField(fieldType: .username)

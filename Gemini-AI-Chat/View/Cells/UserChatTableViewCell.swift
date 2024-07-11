@@ -7,7 +7,7 @@
 
 import UIKit
 
-class UserChatTableViewCell: UITableViewCell {
+final class UserChatTableViewCell: UITableViewCell {
 
     static let identifier = "UserChatTableViewCell"
     

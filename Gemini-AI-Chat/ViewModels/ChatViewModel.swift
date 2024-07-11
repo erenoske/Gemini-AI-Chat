@@ -13,7 +13,7 @@ protocol ChatViewModelDelegate: AnyObject {
     func updateLastMessage(with message: String)
 }
 
-class ChatViewModel {
+final class ChatViewModel {
     
     weak var delegate: ChatViewModelDelegate?
     
