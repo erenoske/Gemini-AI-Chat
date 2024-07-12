@@ -16,6 +16,7 @@
 		B02732C82C3395860053C7BC /* UserChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02732C72C3395860053C7BC /* UserChatTableViewCell.swift */; };
 		B02732D82C38AFA40053C7BC /* SideMenu in Frameworks */ = {isa = PBXBuildFile; productRef = B02732D72C38AFA40053C7BC /* SideMenu */; };
 		B02732DC2C38B52A0053C7BC /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02732DB2C38B52A0053C7BC /* MenuViewController.swift */; };
+		B05FAA562C40C664001BA009 /* ModelChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05FAA552C40C664001BA009 /* ModelChatTableViewCell.swift */; };
 		B09F85C52C3C890100F129EB /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09F85C42C3C890100F129EB /* ChatService.swift */; };
 		B09F85C72C3D744800F129EB /* ChatMessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09F85C62C3D744700F129EB /* ChatMessageRequest.swift */; };
 		B09F85C92C3D7C8D00F129EB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B09F85C82C3D7C8D00F129EB /* GoogleService-Info.plist */; };
@@ -54,6 +55,7 @@
 		B02732BE2C32F9DB0053C7BC /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
 		B02732C72C3395860053C7BC /* UserChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserChatTableViewCell.swift; sourceTree = "<group>"; };
 		B02732DB2C38B52A0053C7BC /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		B05FAA552C40C664001BA009 /* ModelChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelChatTableViewCell.swift; sourceTree = "<group>"; };
 		B09F85C42C3C890100F129EB /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		B09F85C62C3D744700F129EB /* ChatMessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageRequest.swift; sourceTree = "<group>"; };
 		B09F85C82C3D7C8D00F129EB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				B02732C72C3395860053C7BC /* UserChatTableViewCell.swift */,
+				B05FAA552C40C664001BA009 /* ModelChatTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 				B02732B82C31B63E0053C7BC /* APIKey.swift in Sources */,
 				B09F85CD2C3DB2DE00F129EB /* ChatTitle.swift in Sources */,
 				B0D1CBE72BDC14A70022F143 /* AlertManager.swift in Sources */,
+				B05FAA562C40C664001BA009 /* ModelChatTableViewCell.swift in Sources */,
 				B0D1CBD82BDBCC5B0022F143 /* ForgotPasswordViewController.swift in Sources */,
 				B0D1CBF32BDC3F170022F143 /* AuthService.swift in Sources */,
 				B0D1CBF82BDC44030022F143 /* LoginUserRequest.swift in Sources */,

@@ -5,7 +5,6 @@
 //  Created by eren on 1.07.2024.
 //
 
-import Foundation
 import GoogleGenerativeAI
 import UIKit
 

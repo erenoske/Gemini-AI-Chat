@@ -15,7 +15,7 @@ final class ChatService {
     
     private init() {}
     
-    public func uploadMessage(with request: ChatMessageRequest) {
+    func uploadMessage(with request: ChatMessageRequest) {
         let id = UUID().uuidString
         let chatId = request.id
         let message = request.parts
@@ -42,7 +42,7 @@ final class ChatService {
             }
     }
     
-    public func uploadTitles(with title: String, and chatId: String) {
+   func uploadTitles(with title: String, and chatId: String) {
         let id = UUID().uuidString
         let createdTime = Date().timeIntervalSince1970
         

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SwiftyMarkdown
 import PhotosUI
 import SideMenu
 
@@ -37,7 +36,7 @@ final class HomeViewController: UIViewController {
         let tableView = UITableView()
         tableView.backgroundColor = .systemBackground
         tableView.allowsSelection = false
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(ModelChatTableViewCell.self, forCellReuseIdentifier: ModelChatTableViewCell.identifier)
         tableView.register(UserChatTableViewCell.self, forCellReuseIdentifier: UserChatTableViewCell.identifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
@@ -162,7 +161,7 @@ final class HomeViewController: UIViewController {
     private func configureSideMenu() {
         let menu = SideMenuNavigationController(rootViewController: viewController)
         menu.leftSide = true
-        menu.menuWidth = view.frame.width * 0.8
+        menu.menuWidth = 300
         menu.presentationStyle = .viewSlideOutMenuIn
         SideMenuManager.default.leftMenuNavigationController = menu
         SideMenuManager.default.addPanGestureToPresent(toView: self.view)
@@ -355,42 +354,21 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let model = titles[indexPath.row]
         
         if model.role == "user" {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: UserChatTableViewCell.identifier, for: indexPath) as? UserChatTableViewCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: UserChatTableViewCell.identifier, for: indexPath) as? UserChatTableViewCell else {
+                return UITableViewCell()
+            }
             
             cell.configure(with: model.parts, and: model.image)
-            cell.backgroundColor = .clear
             
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-              
-              for subview in cell.contentView.subviews {
-                  subview.removeFromSuperview()
-              }
-              
-            let markdownText = SwiftyMarkdown(string: titles[indexPath.row].parts)
-              let attributedText = markdownText.attributedString()
-              
-              let textView = UITextView(frame: cell.contentView.bounds)
-              textView.attributedText = attributedText
-              textView.isEditable = false
-              textView.isScrollEnabled = false
-              textView.dataDetectorTypes = [.link]
-              textView.delegate = self
-              
-              cell.contentView.addSubview(textView)
-              
-              textView.translatesAutoresizingMaskIntoConstraints = false
-              NSLayoutConstraint.activate([
-                  textView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
-                  textView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor),
-                  textView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
-                  textView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor)
-              ])
-              
-              cell.backgroundColor = .clear
-              
-              return cell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ModelChatTableViewCell.identifier, for: indexPath) as? ModelChatTableViewCell else {
+                return UITableViewCell()
+            }
+            
+            cell.configure(with: model.parts)
+            
+            return cell
         }
         
 

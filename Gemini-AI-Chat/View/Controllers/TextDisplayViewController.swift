@@ -5,7 +5,6 @@
 //  Created by eren on 10.07.2024.
 //
 
-import Foundation
 import UIKit
 
 final class TextDisplayViewController: UIViewController {
