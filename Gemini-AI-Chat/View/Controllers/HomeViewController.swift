@@ -11,7 +11,13 @@ import SideMenu
 
 final class HomeViewController: UIViewController {
     
-    public var titles = [ChatModel]()
+    public var titles = [ChatModel]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.imageView.isHidden = true
+            }
+        }
+    }
     
     private var textViewHeightConstraint: NSLayoutConstraint!
     
@@ -22,6 +28,12 @@ final class HomeViewController: UIViewController {
     private var viewController: MenuViewController
 
     private var id = UUID().uuidString
+    
+    private var loading = false {
+        didSet {
+            updateLoadingState()
+        }
+    }
 
     
     private let imageView: UIImageView = {
@@ -61,7 +73,7 @@ final class HomeViewController: UIViewController {
         textView.layer.masksToBounds = true
         textView.layer.cornerRadius = 20
         textView.layer.borderWidth = 1
-        textView.layer.borderColor = UIColor.secondaryLabel.cgColor
+        textView.layer.borderColor = UIColor.darkGray.cgColor
         textView.backgroundColor = .systemBackground
         textView.isScrollEnabled = false
         textView.delegate = self
@@ -75,7 +87,6 @@ final class HomeViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .label
         button.setImage(UIImage(systemName: "paperplane"), for: .normal)
-        button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         return button
     }()
     
@@ -104,6 +115,12 @@ final class HomeViewController: UIViewController {
         stackView.distribution = .equalSpacing
         stackView.spacing = 15
         return stackView
+    }()
+    
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
     }()
     
     init(viewModel: ChatViewModel, viewController: MenuViewController) {
@@ -175,7 +192,16 @@ final class HomeViewController: UIViewController {
         view.addSubview(textView)
         view.addSubview(sentButton)
         view.addSubview(buttonsStackView)
+        view.addSubview(activityIndicator)
         textView.addSubview(placeHolder)
+    }
+    
+    func updateLoadingState() {
+        if loading {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+        }
     }
     
     private func adjustTextFieldHeight() {
@@ -222,8 +248,8 @@ final class HomeViewController: UIViewController {
         textViewHeightConstraint = textView.heightAnchor.constraint(equalToConstant: 40)
         buttonsStackViewConstraint = buttonsStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15)
         NSLayoutConstraint.activate([
-            textView.leadingAnchor.constraint(equalTo: buttonsStackView.leadingAnchor, constant: 75),
-            textView.trailingAnchor.constraint(equalTo: sentButton.trailingAnchor, constant: -30),
+            textView.leadingAnchor.constraint(equalTo: buttonsStackView.trailingAnchor, constant: 15),
+            textView.trailingAnchor.constraint(equalTo: sentButton.leadingAnchor, constant: -15),
             textView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor, constant: -10),
             textViewHeightConstraint,
             
@@ -238,14 +264,19 @@ final class HomeViewController: UIViewController {
             
             sentButton.centerYAnchor.constraint(equalTo: textView.centerYAnchor),
             sentButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            sentButton.widthAnchor.constraint(equalToConstant: 25),
             
             buttonsStackView.centerYAnchor.constraint(equalTo: textView.centerYAnchor),
             buttonsStackViewConstraint,
+            buttonsStackView.widthAnchor.constraint(equalToConstant: 65),
             
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             imageView.widthAnchor.constraint(equalToConstant: 90),
-            imageView.heightAnchor.constraint(equalToConstant: 90)
+            imageView.heightAnchor.constraint(equalToConstant: 90),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
             ])
     }
     
@@ -281,18 +312,21 @@ extension HomeViewController {
     }
     
     @objc private func didTabNewChat() {
-        titles.removeAll()
-        tableView.reloadData()
-        id = UUID().uuidString
-        viewModel.firstMessage = true
-        imageView.isHidden = false
+        if !loading {
+            titles.removeAll()
+            tableView.reloadData()
+            id = UUID().uuidString
+            viewModel.firstMessage = true
+            DispatchQueue.main.async {
+                self.imageView.isHidden = false
+            }
+        }
     }
     
     @objc private func didTapSentButton() {
         guard let text = textView.text, !text.isEmpty else { return }
         textView.text = nil
         textView.resignFirstResponder()
-        imageView.isHidden = true
         
         // recall function to update placeholder visibility
         textViewDidChange(textView)
@@ -398,14 +432,24 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                     }
                 }
                 
-                return UIMenu(title: "", image: nil, identifier: nil, options: .displayInline, children: [copyAction, showTextAction])
+                let shareTextAction = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { _ in
+                    let activityViewController = UIActivityViewController(activityItems: [cleanSelectedMessage], applicationActivities: nil)
+
+                    activityViewController.popoverPresentationController?.sourceView = self.view
+                    
+                    self.present(activityViewController, animated: true, completion: nil)
+                }
+                
+                return UIMenu(title: "", image: nil, identifier: nil, options: .displayInline, children: [copyAction, showTextAction, shareTextAction])
             }
         
         return config
     }
-
-
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.layer.cornerRadius = 10
+        cell.layer.masksToBounds = true
+    }
 }
 
 // MARK: - UITextView
@@ -437,6 +481,8 @@ extension HomeViewController: ChatViewModelDelegate {
         
         titles.append(ChatModel(role: "model", parts: message, image: nil))
         reloadData()
+        
+        HapticsManager.shared.vibrate()
     }
     
 }
@@ -449,13 +495,16 @@ extension HomeViewController: MenuViewControllerDelegate {
             id = UUID().uuidString
             titles.removeAll()
             viewModel.firstMessage = true
-            imageView.isHidden = false
             tableView.reloadData()
             SideMenuManager.default.leftMenuNavigationController?.dismiss(animated: true, completion: nil)
+            DispatchQueue.main.async {
+                self.imageView.isHidden = false
+            }
         }
     }
     
     func didTabTitle(title: ChatTitle) {
+        loading = true
         id = title.chatId
         titles.removeAll()
         viewModel.firstMessage = false
@@ -471,6 +520,7 @@ extension HomeViewController: MenuViewControllerDelegate {
                 self.titles = data
                 DispatchQueue.main.async {
                     self.reloadChatData()
+                    self.loading = false
                 }
             }
         }

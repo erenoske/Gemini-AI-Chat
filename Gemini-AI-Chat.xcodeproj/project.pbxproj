@@ -17,6 +17,7 @@
 		B02732D82C38AFA40053C7BC /* SideMenu in Frameworks */ = {isa = PBXBuildFile; productRef = B02732D72C38AFA40053C7BC /* SideMenu */; };
 		B02732DC2C38B52A0053C7BC /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02732DB2C38B52A0053C7BC /* MenuViewController.swift */; };
 		B05FAA562C40C664001BA009 /* ModelChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05FAA552C40C664001BA009 /* ModelChatTableViewCell.swift */; };
+		B083BEAA2C430DD700D0A59E /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B083BEA92C430DD700D0A59E /* HapticsManager.swift */; };
 		B09F85C52C3C890100F129EB /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09F85C42C3C890100F129EB /* ChatService.swift */; };
 		B09F85C72C3D744800F129EB /* ChatMessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09F85C62C3D744700F129EB /* ChatMessageRequest.swift */; };
 		B09F85C92C3D7C8D00F129EB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B09F85C82C3D7C8D00F129EB /* GoogleService-Info.plist */; };
@@ -56,6 +57,7 @@
 		B02732C72C3395860053C7BC /* UserChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserChatTableViewCell.swift; sourceTree = "<group>"; };
 		B02732DB2C38B52A0053C7BC /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B05FAA552C40C664001BA009 /* ModelChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelChatTableViewCell.swift; sourceTree = "<group>"; };
+		B083BEA92C430DD700D0A59E /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
 		B09F85C42C3C890100F129EB /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		B09F85C62C3D744700F129EB /* ChatMessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageRequest.swift; sourceTree = "<group>"; };
 		B09F85C82C3D7C8D00F129EB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 				B0D1CBFB2BDD4CEC0022F143 /* Extensions.swift */,
 				B02732B72C31B63E0053C7BC /* APIKey.swift */,
 				B09F85C42C3C890100F129EB /* ChatService.swift */,
+				B083BEA92C430DD700D0A59E /* HapticsManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -336,6 +339,7 @@
 				B0D1CBFA2BDD3F3B0022F143 /* Validator.swift in Sources */,
 				B0D1CC002BE569160022F143 /* EmailLinkRequest.swift in Sources */,
 				B0D1CBBF2BDBCB1D0022F143 /* AppDelegate.swift in Sources */,
+				B083BEAA2C430DD700D0A59E /* HapticsManager.swift in Sources */,
 				B09F85CB2C3D9A6F00F129EB /* ChatMessage.swift in Sources */,
 				B0D1CBDC2BDBCC9F0022F143 /* RegisterViewController.swift in Sources */,
 				B02732C82C3395860053C7BC /* UserChatTableViewCell.swift in Sources */,
@@ -504,7 +508,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "erenoske.com.gemini-ai-chat";
 				PRODUCT_NAME = "gemini-ai-chat";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -538,7 +542,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "erenoske.com.gemini-ai-chat";
 				PRODUCT_NAME = "gemini-ai-chat";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

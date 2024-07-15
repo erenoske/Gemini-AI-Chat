@@ -19,10 +19,11 @@ final class UserChatTableViewCell: UITableViewCell {
         return view
     }()
     
-    public lazy var messageLabel: UILabel = {
+    private lazy var messageLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = .label
         return label
     }()

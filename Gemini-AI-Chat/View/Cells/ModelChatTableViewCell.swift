@@ -14,6 +14,17 @@ final class ModelChatTableViewCell: UITableViewCell {
     
     let textView = UITextView()
     
+    private lazy var profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 15
+        imageView.tintColor = .label
+        imageView.image = UIImage(named: "geminiLogo")
+        return imageView
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupTextView()
@@ -28,13 +39,20 @@ final class ModelChatTableViewCell: UITableViewCell {
         textView.isEditable = false
         textView.isScrollEnabled = false
         textView.dataDetectorTypes = [.link]
+        contentView.addSubview(profileImageView)
         contentView.addSubview(textView)
         
         textView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
+            
+            profileImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+            profileImageView.widthAnchor.constraint(equalToConstant: 30),
+            profileImageView.heightAnchor.constraint(equalToConstant: 30),
+            
             textView.topAnchor.constraint(equalTo: contentView.topAnchor),
             textView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            textView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+            textView.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 5),
             textView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15)
         ])
     }

@@ -52,7 +52,7 @@ final class MenuViewController: UIViewController {
     private lazy var logoutButton: UIButton = {
         
         var configuration = UIButton.Configuration.plain()
-        configuration.title = "Çıkış Yap"
+        configuration.title = "Logout"
         configuration.imagePadding = 10
         
         let button = UIButton(configuration: configuration)
