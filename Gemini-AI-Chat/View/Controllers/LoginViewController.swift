@@ -13,9 +13,20 @@ final class LoginViewController: UIViewController {
     private let emailField = CustomTextField(fieldType: .email)
     private let passwordField = CustomTextField(fieldType: .password)
     
-    private let signInButton = CustomButton(title: "Sign In", hasBackground: true, fontSize: .big)
-    private let newUserButton = CustomButton(title: "New User? Create Account.", fontSize: .med)
-    private let forgotPasswordButton = CustomButton(title: "Forgot Password?", fontSize: .small)
+    private let signInButton = CustomButton(title: "Sign In", hasBackground: true, fontSize: .big, type: .normal)
+    private let googleInButton = CustomButton(title: "Sing in with Google", hasBackground: true, fontSize: .big, type: .google)
+    private let newUserButton = CustomButton(title: "Don't you have an account? Register", fontSize: .med, type: .normal)
+    private let forgotPasswordButton = CustomButton(title: "Forgot Password?", fontSize: .small, type: .normal)
+    
+    private let label: UILabel = {
+        let label = UILabel()
+        label.textColor = .label
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 18, weight: .regular)
+        label.text = "Or"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -42,6 +53,7 @@ final class LoginViewController: UIViewController {
         self.signInButton.addTarget(self, action: #selector(didTabSignIn), for: .touchUpInside)
         self.newUserButton.addTarget(self, action: #selector(didTapNewUser), for: .touchUpInside)
         self.forgotPasswordButton.addTarget(self, action: #selector(didTapForgotPassword), for: .touchUpInside)
+        self.googleInButton.addTarget(self, action: #selector(googleSignIn), for: .touchUpInside)
     }
     
     @objc private func didTabSignIn() {
@@ -68,7 +80,7 @@ final class LoginViewController: UIViewController {
         overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         self.view.addSubview(overlayView)
         
-        let activityIndicator = UIActivityIndicatorView(style: .large)
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
         activityIndicator.startAnimating()
         overlayView.addSubview(activityIndicator)
         activityIndicator.center = overlayView.center
@@ -81,6 +93,30 @@ final class LoginViewController: UIViewController {
             if let error = error {
                 AlertManager.showSignInErrorAlert(on: self, with: error)
                 return
+            }
+            
+            if let sceneDelegate = self.view.window?.windowScene?.delegate as? SceneDelegate {
+                sceneDelegate.checkAuthentication()
+            }
+        }
+    }
+    
+    @objc private func googleSignIn() {
+        let overlayView = UIView(frame: self.view.bounds)
+        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        self.view.addSubview(overlayView)
+        
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator.startAnimating()
+        overlayView.addSubview(activityIndicator)
+        activityIndicator.center = overlayView.center
+        
+        AuthService.shared.signInWithGoogle { [weak self] error in
+            
+            guard let self = self else {return}
+            
+            if let error = error {
+                AlertManager.showSignInErrorAlert(on: self, with: error)
             }
             
             if let sceneDelegate = self.view.window?.windowScene?.delegate as? SceneDelegate {
@@ -115,7 +151,9 @@ final class LoginViewController: UIViewController {
         contentView.addSubview(headerView)
         contentView.addSubview(emailField)
         contentView.addSubview(passwordField)
+        contentView.addSubview(label)
         contentView.addSubview(signInButton)
+        contentView.addSubview(googleInButton)
         contentView.addSubview(newUserButton)
         contentView.addSubview(forgotPasswordButton)
         
@@ -125,6 +163,7 @@ final class LoginViewController: UIViewController {
         signInButton.translatesAutoresizingMaskIntoConstraints = false
         newUserButton.translatesAutoresizingMaskIntoConstraints = false
         forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = false
+        googleInButton.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private func applyConstraints() {
@@ -173,8 +212,24 @@ final class LoginViewController: UIViewController {
             signInButton.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10)
         ]
         
+        let labelConstraints = [
+            label.topAnchor.constraint(equalTo: signInButton.bottomAnchor, constant: 22),
+            label.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            label.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            label.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10)
+        ]
+        
+        
+        let googleInButtonConstraints = [
+            googleInButton.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 22),
+            googleInButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            googleInButton.heightAnchor.constraint(equalToConstant: 40),
+            googleInButton.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            googleInButton.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10)
+        ]
+        
         let newUserButtonConstraints = [
-            newUserButton.topAnchor.constraint(equalTo: signInButton.bottomAnchor),
+            newUserButton.topAnchor.constraint(equalTo: googleInButton.bottomAnchor),
             newUserButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             newUserButton.heightAnchor.constraint(equalToConstant: 50),
             newUserButton.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
@@ -187,13 +242,15 @@ final class LoginViewController: UIViewController {
             forgotPasswordButton.heightAnchor.constraint(equalToConstant: 30),
             forgotPasswordButton.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             forgotPasswordButton.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            forgotPasswordButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20) // Alt kısıt ekleyin
+            forgotPasswordButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
         ]
         
         NSLayoutConstraint.activate(headerViewConstraints)
         NSLayoutConstraint.activate(emailFieldConstraints)
         NSLayoutConstraint.activate(passwordFieldConstraints)
+        NSLayoutConstraint.activate(labelConstraints)
         NSLayoutConstraint.activate(signInButtonConstraints)
+        NSLayoutConstraint.activate(googleInButtonConstraints)
         NSLayoutConstraint.activate(newUserButtonConstraints)
         NSLayoutConstraint.activate(forgotPasswordButtonConstraints)
     }

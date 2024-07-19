@@ -15,7 +15,12 @@ final class CustomButton: UIButton {
         case small
     }
     
-    init(title: String, hasBackground: Bool = false, fontSize: FontSize) {
+    enum ButtonType {
+        case normal
+        case google
+    }
+    
+    init(title: String, hasBackground: Bool = false, fontSize: FontSize, type: ButtonType) {
         super.init(frame: .zero)
         self.setTitle(title, for: .normal)
         self.layer.cornerRadius = 5
@@ -29,13 +34,28 @@ final class CustomButton: UIButton {
         if hasBackground {
             self.layer.borderColor = UIColor.secondaryLabel.cgColor
             self.layer.borderWidth = 1
-            self.layer.cornerRadius = 20
+            self.layer.cornerRadius = 10
             self.layer.masksToBounds = true
+        }
+        
+        switch type {
+        case .google:
+            var configuration = UIButton.Configuration.plain()
+            if let originalImage = UIImage(named: "g-logo") {
+                let resizedImage = originalImage.resized(to: CGSize(width: 50, height: 50))
+                configuration.image = resizedImage
+            }
+            configuration.baseBackgroundColor = .systemBackground
+            configuration.imagePadding = 10
+            
+            self.configuration = configuration
+        case .normal:
+            break
         }
         
         switch fontSize {
         case .big:
-            self.titleLabel?.font = .systemFont(ofSize: 22, weight: .bold)
+            self.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         case .med:
             self.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
         case .small:

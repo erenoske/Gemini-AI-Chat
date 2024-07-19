@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 protocol MenuViewControllerDelegate: AnyObject {
     func didTabTitle(title: ChatTitle)
@@ -66,7 +67,6 @@ final class MenuViewController: UIViewController {
         button.addTarget(self, action: #selector(didTabLogoutButton), for: .touchUpInside)
         return button
     }()
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,6 +104,15 @@ final class MenuViewController: UIViewController {
             if let user = user {
                 DispatchQueue.main.async {
                     self.nameLabel.text = "\(user.username)"
+                    
+                    if let imageUrl = user.image {
+                        guard let url = URL(string: imageUrl) else {
+                            return
+                        }
+                        
+                        self.profilePicture.sd_setImage(with: url, completed: nil)
+                    }
+
                 }
             }
         }

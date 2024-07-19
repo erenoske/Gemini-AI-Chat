@@ -31,7 +31,7 @@ final class CustomTextField: UITextField {
         
         self.layer.borderColor = UIColor.secondaryLabel.cgColor
         self.layer.borderWidth = 1
-        self.layer.cornerRadius = 20
+        self.layer.cornerRadius = 10 
         self.layer.masksToBounds = true
         
         self.leftViewMode = .always

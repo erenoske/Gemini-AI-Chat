@@ -7,6 +7,9 @@
 
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseCore
+import GoogleSignIn
+import GoogleSignInSwift
 
 final class AuthService {
     
@@ -113,10 +116,78 @@ final class AuthService {
                 if let snapshot = snapshot,
                    let snapshotData = snapshot.data(),
                    let username = snapshotData["username"] as? String,
-                   let email = snapshotData["email"] as? String {
-                    let user = User(username: username, email: email, userUID: userUID)
+                   let email = snapshotData["email"] as? String,
+                   let image = snapshotData["image"] as? String? {
+                    let user = User(username: username, email: email, userUID: userUID, image: image)
                     completion(user, nil)
                 }
             }
+    }
+    
+    func signInWithGoogle(completion: @escaping (Error?) -> Void) {
+        guard let clientID = FirebaseApp.app()?.options.clientID else {
+            fatalError("No client ID found in Firebase configuration")
+        }
+        
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
+        
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first,
+              let rootViewController = window.rootViewController else {
+            print("There is no root view controller")
+            completion(nil)
+            return
+        }
+        
+        GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { userAuthentication, error in
+            if let error = error {
+                completion(error)
+                return
+            }
+            
+            guard let user = userAuthentication?.user,
+                  let idToken = user.idToken else {
+                completion(nil)
+                return
+            }
+            
+            let accessToken = user.accessToken
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString, accessToken: accessToken.tokenString)
+            
+            Auth.auth().signIn(with: credential) { authResult, error in
+                if let error = error {
+                    completion(error)
+                }
+                
+                guard let firebaseUser = authResult?.user else {
+                    completion(nil)
+                    return
+                }
+                
+                let db = Firestore.firestore()
+                db.collection("users").whereField("email", isEqualTo: firebaseUser.email ?? "Unknown").getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        completion(error)
+                        return
+                    }
+                    
+                    if let documents = querySnapshot?.documents, !documents.isEmpty {
+                        completion(nil)
+                        return
+                    } else {
+                        db.collection("users").document(firebaseUser.uid).setData([
+                            "username": firebaseUser.displayName ?? "Unknown",
+                            "email": firebaseUser.email ?? "Unknown",
+                            "image": firebaseUser.photoURL?.absoluteString ?? "Unknown"
+                        ]) { error in
+                            if let error = error {
+                                completion(error)
+                            } 
+                        }
+                    }
+                }
+            }
+        }
     }
 }

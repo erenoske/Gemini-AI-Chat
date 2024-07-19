@@ -331,15 +331,15 @@ extension HomeViewController {
         // recall function to update placeholder visibility
         textViewDidChange(textView)
         
-        titles.append(ChatModel(role: "user", parts: text, image: nil))
-        titles.append(ChatModel(role: "model", parts: "Loading...", image: nil))
-        reloadData()
-        
-        if titles.count == 1 {
+        if titles.count == 0 {
             viewModel.sendMessage(with: text, and: nil, id: id)
         } else {
             viewModel.sendMessage(with: text, and: titles, id: id)
         }
+        
+        titles.append(ChatModel(role: "user", parts: text, image: nil))
+        titles.append(ChatModel(role: "model", parts: "Loading...", image: nil))
+        reloadData()
         
     }
     
@@ -507,6 +507,7 @@ extension HomeViewController: MenuViewControllerDelegate {
         loading = true
         id = title.chatId
         titles.removeAll()
+        tableView.reloadData()
         viewModel.firstMessage = false
         imageView.isHidden = true
         SideMenuManager.default.leftMenuNavigationController?.dismiss(animated: true, completion: nil)
@@ -547,19 +548,23 @@ extension HomeViewController: PHPickerViewControllerDelegate {
                 
                 guard let selectedImage = image as? UIImage else { return }
                 
+                
+                DispatchQueue.main.async {
+                    if self.titles.count == 0 {
+                        self.viewModel.sendMessage(with: self.textView.text, and: nil, id: self.id, image: selectedImage)
+                    } else {
+                        self.viewModel.sendMessage(with: self.textView.text, and: self.titles, id: self.id, image: selectedImage)
+                    }
+                }
+                
                 DispatchQueue.main.async {
                     self.titles.append(ChatModel(role: "user", parts: self.textView.text, image: selectedImage))
                     self.titles.append(ChatModel(role: "model", parts: "Loading...", image: nil))
-                    self.reloadData()
-                }
-                
-                
-                DispatchQueue.main.async {
-                    self.viewModel.sendMessage(with: self.textView.text, and: self.titles, id: self.id, image: selectedImage)
                     self.imageView.isHidden = true
                     self.textView.resignFirstResponder()
                     self.textView.text = nil
                     self.textViewDidChange(self.textView)
+                    self.reloadData()
                 }
             }
         }
@@ -580,19 +585,23 @@ extension HomeViewController: UIImagePickerControllerDelegate, UINavigationContr
             return
         }
         
+        
+        DispatchQueue.main.async {
+            if self.titles.count == 0 {
+                self.viewModel.sendMessage(with: self.textView.text, and: nil, id: self.id, image: selectedImage)
+            } else {
+                self.viewModel.sendMessage(with: self.textView.text, and: self.titles, id: self.id, image: selectedImage)
+            }
+        }
+        
         DispatchQueue.main.async {
             self.titles.append(ChatModel(role: "user", parts: self.textView.text, image: selectedImage))
             self.titles.append(ChatModel(role: "model", parts: "Loading...", image: nil))
-            self.reloadData()
-        }
-        
-        
-        DispatchQueue.main.async {
-            self.viewModel.sendMessage(with: self.textView.text, and: self.titles, id: self.id, image: selectedImage)
             self.imageView.isHidden = true
             self.textView.resignFirstResponder()
             self.textView.text = nil
             self.textViewDidChange(self.textView)
+            self.reloadData()
         }
     }
 }

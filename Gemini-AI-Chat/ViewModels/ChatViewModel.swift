@@ -33,6 +33,7 @@ final class ChatViewModel {
                         response = try await chat.sendMessage(text, image)
                     } else {
                         response = try await chat.sendMessage(text)
+
                     }
                 } else {
                     if let image = image {
