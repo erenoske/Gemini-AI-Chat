@@ -23,6 +23,7 @@
 		B083BEB12C471B5C00D0A59E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B083BEB02C471B5C00D0A59E /* GoogleService-Info.plist */; };
 		B083BEB42C4731C600D0A59E /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = B083BEB32C4731C600D0A59E /* SDWebImage */; };
 		B083BEB62C4731C600D0A59E /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B083BEB52C4731C600D0A59E /* SDWebImageMapKit */; };
+		B083BEB92C4B4DAB00D0A59E /* UIView-Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = B083BEB82C4B4DAB00D0A59E /* UIView-Shimmer */; };
 		B09F85C52C3C890100F129EB /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09F85C42C3C890100F129EB /* ChatService.swift */; };
 		B09F85C72C3D744800F129EB /* ChatMessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09F85C62C3D744700F129EB /* ChatMessageRequest.swift */; };
 		B09F85CB2C3D9A6F00F129EB /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09F85CA2C3D9A6F00F129EB /* ChatMessage.swift */; };
@@ -107,6 +108,7 @@
 				B083BEB42C4731C600D0A59E /* SDWebImage in Frameworks */,
 				B02732C22C332DE50053C7BC /* SwiftyMarkdown in Frameworks */,
 				B083BEAD2C471A0800D0A59E /* GoogleSignIn in Frameworks */,
+				B083BEB92C4B4DAB00D0A59E /* UIView-Shimmer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +272,7 @@
 				B083BEAE2C471A0800D0A59E /* GoogleSignInSwift */,
 				B083BEB32C4731C600D0A59E /* SDWebImage */,
 				B083BEB52C4731C600D0A59E /* SDWebImageMapKit */,
+				B083BEB82C4B4DAB00D0A59E /* UIView-Shimmer */,
 			);
 			productName = "swift-login-system";
 			productReference = B0D1CBBB2BDBCB1D0022F143 /* gemini-ai-chat.app */;
@@ -306,6 +309,7 @@
 				B02732D62C38AFA40053C7BC /* XCRemoteSwiftPackageReference "SideMenu" */,
 				B083BEAB2C471A0800D0A59E /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				B083BEB22C4731C600D0A59E /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				B083BEB72C4B4DAB00D0A59E /* XCRemoteSwiftPackageReference "UIView-Shimmer" */,
 			);
 			productRefGroup = B0D1CBBC2BDBCB1D0022F143 /* Products */;
 			projectDirPath = "";
@@ -633,6 +637,14 @@
 				minimumVersion = 5.19.4;
 			};
 		};
+		B083BEB72C4B4DAB00D0A59E /* XCRemoteSwiftPackageReference "UIView-Shimmer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/omerfarukozturk/UIView-Shimmer.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.4;
+			};
+		};
 		B0D1CBEB2BDC3DBF0022F143 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -678,6 +690,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B083BEB22C4731C600D0A59E /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImageMapKit;
+		};
+		B083BEB82C4B4DAB00D0A59E /* UIView-Shimmer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B083BEB72C4B4DAB00D0A59E /* XCRemoteSwiftPackageReference "UIView-Shimmer" */;
+			productName = "UIView-Shimmer";
 		};
 		B0D1CBEC2BDC3DC00022F143 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;

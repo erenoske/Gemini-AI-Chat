@@ -34,6 +34,8 @@ final class HomeViewController: UIViewController {
             updateLoadingState()
         }
     }
+    
+    private var firstMessage = true
 
     
     private let imageView: UIImageView = {
@@ -475,16 +477,21 @@ extension HomeViewController: UITextViewDelegate {
 extension HomeViewController: ChatViewModelDelegate {
     func updateLastMessage(with message: String) {
         
-        if titles.count > 0 {
-            titles.removeLast()
-        }
+        let indexPath = IndexPath(row: titles.count - 1, section: 0)
         
-        titles.append(ChatModel(role: "model", parts: message, image: nil))
-        reloadData()
+        if titles.last?.parts == "Loading..." {
+            titles.removeLast()
+            titles.append(ChatModel(role: "model", parts: message, image: nil))
+        } else {
+            titles[titles.count - 1].parts += message
+        }
+
+        DispatchQueue.main.async {
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
         
         HapticsManager.shared.vibrate()
     }
-    
 }
 
 // MARK: - MenuViewControllerDelegate

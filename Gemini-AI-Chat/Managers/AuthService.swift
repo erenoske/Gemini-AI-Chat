@@ -17,7 +17,7 @@ final class AuthService {
     
     private init() {}
     
-    public func sendSignInLink(with userRequest: EmailLinkRequest, completion: @escaping (Bool, Error?) -> Void) {
+    func sendSignInLink(with userRequest: EmailLinkRequest, completion: @escaping (Bool, Error?) -> Void) {
         let email = userRequest.email
         
         let actionCodeSettings = ActionCodeSettings()
@@ -38,7 +38,7 @@ final class AuthService {
         }
     }
     
-    public func registerUser(with userRequest: RegisterUserRequest, completion: @escaping (Bool, Error?) -> Void) {
+    func registerUser(with userRequest: RegisterUserRequest, completion: @escaping (Bool, Error?) -> Void) {
         let username = userRequest.username
         let email = userRequest.email
         let password = userRequest.password
@@ -73,7 +73,7 @@ final class AuthService {
         }
     }
     
-    public func signIn(with userRequest: LoginUserRequest, completion: @escaping (Error?) -> Void) {
+    func signIn(with userRequest: LoginUserRequest, completion: @escaping (Error?) -> Void) {
         Auth.auth().signIn(withEmail: userRequest.email, password: userRequest.password) { result, error in
             if let error = error {
                 completion(error)
@@ -84,7 +84,7 @@ final class AuthService {
         }
     }
     
-    public func signOut(completion: @escaping (Error?) -> Void) {
+    func signOut(completion: @escaping (Error?) -> Void) {
         do {
             try Auth.auth().signOut()
             completion(nil)
@@ -93,13 +93,13 @@ final class AuthService {
         }
     }
     
-    public func forgotPassword(with email: String, completion: @escaping (Error?) -> Void) {
+    func forgotPassword(with email: String, completion: @escaping (Error?) -> Void) {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             completion(error)
         }
     }
     
-    public func fetchUser(completion: @escaping (User?, Error?) -> Void) {
+    func fetchUser(completion: @escaping (User?, Error?) -> Void) {
         
         guard let userUID = Auth.auth().currentUser?.uid else { return }
         

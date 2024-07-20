@@ -10,6 +10,6 @@ import UIKit
 
 struct ChatModel {
     let role: String
-    let parts: String
+    var parts: String
     let image: UIImage?
 }
