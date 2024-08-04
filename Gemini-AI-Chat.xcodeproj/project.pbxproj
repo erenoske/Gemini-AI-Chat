@@ -52,6 +52,7 @@
 		B0D1CBFC2BDD4CEC0022F143 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1CBFB2BDD4CEC0022F143 /* Extensions.swift */; };
 		B0D1CBFE2BDD972E0022F143 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1CBFD2BDD972E0022F143 /* User.swift */; };
 		B0D1CC002BE569160022F143 /* EmailLinkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1CBFF2BE569160022F143 /* EmailLinkRequest.swift */; };
+		B0DD96BA2C532B8300050A52 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DD96B92C532B8300050A52 /* NetworkMonitor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -91,6 +92,7 @@
 		B0D1CBFB2BDD4CEC0022F143 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		B0D1CBFD2BDD972E0022F143 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B0D1CBFF2BE569160022F143 /* EmailLinkRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLinkRequest.swift; sourceTree = "<group>"; };
+		B0DD96B92C532B8300050A52 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,6 +228,7 @@
 				B02732B72C31B63E0053C7BC /* APIKey.swift */,
 				B09F85C42C3C890100F129EB /* ChatService.swift */,
 				B083BEA92C430DD700D0A59E /* HapticsManager.swift */,
+				B0DD96B92C532B8300050A52 /* NetworkMonitor.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -342,6 +345,7 @@
 				B09F85CF2C3DFA4700F129EB /* TextDisplayViewController.swift in Sources */,
 				B0D1CBD62BDBCC490022F143 /* LoginViewController.swift in Sources */,
 				B02732B82C31B63E0053C7BC /* APIKey.swift in Sources */,
+				B0DD96BA2C532B8300050A52 /* NetworkMonitor.swift in Sources */,
 				B09F85CD2C3DB2DE00F129EB /* ChatTitle.swift in Sources */,
 				B0D1CBE72BDC14A70022F143 /* AlertManager.swift in Sources */,
 				B05FAA562C40C664001BA009 /* ModelChatTableViewCell.swift in Sources */,

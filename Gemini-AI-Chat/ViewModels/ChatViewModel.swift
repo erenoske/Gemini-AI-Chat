@@ -73,4 +73,22 @@ final class ChatViewModel {
     private func convertToModelContent(_ chatModel: ChatModel) -> ModelContent {
         return ModelContent(role: chatModel.role, parts: chatModel.parts)
     }
+    
+    func fetchChatData(title: ChatTitle, completion: @escaping (Result<[ChatModel], Error>) -> Void) {
+        
+        let id = title.chatId
+
+        ChatService.shared.fetchChat(chatId: id) { data, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            if let data = data {
+                DispatchQueue.main.async {
+                    completion(.success(data))
+                }
+            }
+        }
+    }
 }

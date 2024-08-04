@@ -512,28 +512,29 @@ extension HomeViewController: MenuViewControllerDelegate {
     
     func didTabTitle(title: ChatTitle) {
         loading = true
-        id = title.chatId
         titles.removeAll()
         tableView.reloadData()
         viewModel.firstMessage = false
         imageView.isHidden = true
         SideMenuManager.default.leftMenuNavigationController?.dismiss(animated: true, completion: nil)
-        ChatService.shared.fetchChat(chatId: title.chatId) { data, error in
+        
+        viewModel.fetchChatData(title: title) { [weak self] result in
+            guard let self = self else { return }
             
-            if let error = error {
-                print(error.localizedDescription)
-            }
-            
-            if let data = data {
+            switch result {
+            case .success(let data):
                 self.titles = data
                 DispatchQueue.main.async {
-                    self.reloadChatData()
                     self.loading = false
                 }
+                self.reloadChatData()
+            case .failure(let error):
+                self.titles = [ChatModel(role: "model", parts: error.localizedDescription, image: nil)]
+                self.reloadChatData()
+                self.loading = false
             }
         }
     }
-    
 }
 
 // MARK: - PHPickerViewController
